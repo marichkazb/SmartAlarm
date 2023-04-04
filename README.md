@@ -1,9 +1,11 @@
 # SmartAlarm [Group #5]
-<div align= "center">
-<img src="assets/alarm_image.png"
-     alt="SmartAlarm icon"
-     style="width:250px; height: 250px" />
-     </div>
+
+<div align="center">
+ <img src="assets/alarm_image.png"
+  alt="SmartAlarm icon"
+ width="250" 
+ height="250" 
+</div>
 
 
 ## What is SmartAlarm?
