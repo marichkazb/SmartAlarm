@@ -1,92 +1,119 @@
-# SmartAlarm
+# SmartAlarm [Group #5]
+<div align= "center">
+<img src="assets/alarm_image.png"
+     alt="SmartAlarm icon"
+     style="width:250px; height: 250px" />
+     </div>
 
 
+## What is SmartAlarm?
 
-## Getting started
+SmartAlarm is a [student-maintained project](#🚨-project-status) consisting of building a smart alarm system - which encompasses a range of `sensors` and `actuators` - to protect the users’ houses from intrusions. 
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+The system features a device which can be placed at a substantial spot in the house of the user and it will be enabled by the user in scenarios when either the user is away from their house or in a place where they would like to secure the house and be aware of any possible red signs.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### Main features
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+<details>
+<summary>Intruder detection</summary>
 
 ```
-cd existing_repo
-git remote add origin https://git.chalmers.se/courses/dit113/2023/group-5/smartalarm.git
-git branch -M main
-git push -uf origin main
+Whenever an intruder is detected, a red LED will be activated, the speaker will produce an alerting sound and a notification will be sent to a remote device to inform about the danger.
 ```
 
-## Integrate with your tools
+</details>
 
-- [ ] [Set up project integrations](https://git.chalmers.se/courses/dit113/2023/group-5/smartalarm/-/settings/integrations)
+<details>
+<summary>Anti-Tampering protection</summary>
 
-## Collaborate with your team
+```
+Detects whether someone is trying to move or damage the device itself by integrating a gyroscope sensor. A red LED and alerting speakers are activated immediately.
+```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+</details>
 
-## Test and Deploy
+<details>
+<summary>Activated device indicator</summary>
 
-Use the built-in continuous integration in GitLab.
+```
+Indicates that the vicinity is protected, signaling the owner and deterring would-be intruders. Uses a green LED.
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+</details>
 
-***
+<details>
+<summary>Connection testing</summary>
 
-# Editing this README
+```
+Check if the communication is working as intended, in which case clicking a physical button will allow users to ping the remote device.
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+</details>
+<br>
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## 🎬 Project demo
+* [Demo](https://youtube.com)
 
-## Name
-Choose a self-explaining name for your project.
+---
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## 🔨 Installation
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### Prerequisites
+To use SmartAlarm, you must have a **PC / Android device** with **Internet connection**. 
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+### Get Started
+For a detailed step-to-step install guide, head over to the [Get Started](https://git.chalmers.se/courses/dit113/2023/group-5/smartalarm/-/wikis/Get-Started) section of our wiki page.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+--- 
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## 📃 Documentation
+* [Wiki](https://git.chalmers.se/courses/dit113/2023/group-5/smartalarm/-/wikis/home)
+* [Class diagram](https://miro.com/app/board/uXjVMWJNY1k=/)
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+---
+## 🚨 Project status
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+The SmartAlarm project is currently underway. It is being implemented by students at the Computer Science Department (CSE) of Gothenburg University and Chalmers University of Technology. 
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+The project is currently underway and constitutes a requisite for the course DIT113 of the Bachelor's Degree in Software Engineering and Management.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+>**_NOTE:_** No maintenance or further development of this project is expected to occur beyond the course's duration (Spring 2023).
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+---
+## 👥 Authors and Acknowledgements
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+### Contributors
 
-## License
-For open source projects, say how it is licensed.
+* [Abhimanyu Kumar](https://git.chalmers.se/kumarab)
+* [Agrima Singh](https://git.chalmers.se/agrima)
+* [David Rocha](https://git.chalmers.se/davidroc)
+* [Mariia Zabolotnia](https://git.chalmers.se/mariiaz)
+* [Milena Maćkowiak](https://git.chalmers.se/milenam)
+* [Oana Isabela Mitac](https://git.chalmers.se/mitac)
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+>This project is not open to new contributors.
+
+### Technologies used
+* Wio Seeed Hardware
+* Java
+* C++
+* IntelliJ / Android Studio IDE
+* Arduino IDE
+* Arduino IDE Libraries
+  * Seeed Arduino SFUD
+  * PubSubClient
+  * Seeed Arduino FS
+  * Seeed Arduino rpcUnified
+  * Seeed Arduino rpcWiFi
+  * Seeed_Arduino_mbedtls
+* GitLab
+* Google Docs
+* Miro
+* TinkerCad
+
+### Other Attributions
+
+<a href="https://pixabay.com/illustrations/flasher-signal-police-alarm-5027727/
+">Alarm icon</a> by <a href="https://pixabay.com/users/alexey_hulsov-388655/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=5027727">Alexey Hulsov</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=5027727">Pixabay</a>.
+
+
