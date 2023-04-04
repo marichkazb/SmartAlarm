@@ -9,7 +9,7 @@
 
 ## What is SmartAlarm?
 
-SmartAlarm is a [student-maintained project](#🚨-project-status) consisting of building a smart alarm system - which encompasses a range of `sensors` and `actuators` - to protect the users’ houses from intrusions. 
+SmartAlarm is a [student-maintained project](README.md#-project-status) consisting of building a smart alarm system - which encompasses a range of `sensors` and `actuators` - to protect the users’ houses from intrusions. 
 
 The system features a device which can be placed at a substantial spot in the house of the user and it will be enabled by the user in scenarios when either the user is away from their house or in a place where they would like to secure the house and be aware of any possible red signs.
 
