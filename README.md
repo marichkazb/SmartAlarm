@@ -4,9 +4,8 @@
  <img src="assets/alarm_image.png"
   alt="SmartAlarm icon"
  width="250" 
- height="250" 
+ height="250">
 </div>
-
 
 ## What is SmartAlarm?
 
