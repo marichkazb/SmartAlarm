@@ -44,7 +44,7 @@ The system features a device which can be placed at a substantial spot in the ho
 </details>
 
 ## 🎬 Project demo
-* [Demo](https://youtube.com)
+* [Demo](https://www.youtube.com/watch?v=n2lq2O7l1xM)
 
 ---
 
@@ -66,11 +66,11 @@ For a detailed step-to-step install guide, head over to the [Get Started](https:
 ---
 ## 🚨 Project status
 
-The SmartAlarm project is currently underway. It is being implemented by students at the Computer Science Department (CSE) of Gothenburg University and Chalmers University of Technology. 
+The SmartAlarm project is currently underway. 
 
-The project is currently underway and constitutes a requisite for the course DIT113 of the Bachelor's Degree in Software Engineering and Management.
+This project is being implemented by students and constitutes a requisite for the course DIT113 (Mini Project: Systems Development) of the Bachelor's Degree in Software Engineering and Management, offered by the University of Gothenburg. 
 
->**_NOTE:_** No maintenance or further development of this project is expected to occur beyond the course's duration (Spring 2023).
+>**_NOTE:_** No maintenance or further development of this project is expected to occur beyond the duration of the course (i.e. Spring 2023).
 
 ---
 ## 👥 Authors and Acknowledgements
