@@ -61,7 +61,6 @@ For a detailed step-to-step install guide, head over to the [Get Started](https:
 ## 📃 Documentation
 
 * [Wiki](https://git.chalmers.se/courses/dit113/2023/group-5/smartalarm/-/wikis/home)
-* [Class diagram](https://miro.com/app/board/uXjVMWJNY1k=/)
 
 ---
 ## 🚨 Project status
