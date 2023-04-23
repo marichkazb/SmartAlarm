@@ -47,15 +47,36 @@ The system features a device which can be placed at a substantial spot in the ho
 * [Demo](https://www.youtube.com/watch?v=n2lq2O7l1xM)
 
 ---
+## 🔨 Pre-setup
 
-## 🔨 Installation
+### Windows
+Download NodeJS
+https://nodejs.org/en
 
-### Prerequisites
-To use SmartAlarm, you must have a **PC / Android device** with **Internet connection**. 
+### MacOS
+same OR 
 
-### Get Started
-For a detailed step-to-step install guide, head over to the [Get Started](https://git.chalmers.se/courses/dit113/2023/group-5/smartalarm/-/wikis/Get-Started) section of our wiki page.
+Install Homebrew https://brew.sh/
 
+```
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+Install NodeJS:
+```
+    brew install node 
+```
+
+---
+
+## 🚀 Getting started
+
+```
+  -> navigate to the projects folder (ex. cd IdeaProjects)
+  git clone git@git.chalmers.se:courses/dit113/2023/group-5/smartalarm.git
+  cd smartalarm
+  npm install
+  npx expo start
+```
 --- 
 
 ## 📃 Documentation
@@ -88,6 +109,14 @@ This project is being implemented by students and constitutes a requisite for th
 ### Technologies used
 * Wio Seeed Hardware
 * Java
+* Expo
+* JavaScript
+* React Native
+* React Native Libraries
+  * React Native Navigation
+  * React Native Base
+  * Expo Icons
+* ESLint
 * C++
 * IntelliJ / Android Studio IDE
 * Arduino IDE
