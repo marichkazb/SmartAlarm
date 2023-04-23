@@ -44,6 +44,24 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 
   int bgColor = TFT_BLACK;
+  if(msg_p=="red"){
+    bgColor = TFT_RED;
+  } else if(msg_p=="green"){
+    bgColor = TFT_GREEN;
+  } else if(msg_p=="blue"){
+    bgColor = TFT_BLUE;
+  } else if(msg_p=="yellow"){
+    bgColor = TFT_YELLOW;
+  }else if(msg_p=="white"){
+    bgColor = TFT_WHITE;
+  }else if(msg_p=="orange"){
+    bgColor = TFT_ORANGE;
+  }else if(msg_p=="TURN ON"){
+    digitalWrite(D0, HIGH); 
+  } else if(msg_p=="TURN OFF"){
+    digitalWrite(D0, LOW); 
+  }
+
   int textColor = TFT_YELLOW;    // initializee the text color to white
 
   tft.fillScreen(bgColor);
@@ -132,6 +150,8 @@ void setup() {
   client.setServer(mqtt_server, 1883); // Connect the MQTT Server
   client.setCallback(callback);
 
+
+  pinMode(D0, OUTPUT);
 }
 
 void loop() {
