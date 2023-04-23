@@ -27,6 +27,36 @@ long lastMessageTime = 0;
 char newMessage[50];
 int messageCounter = 0;
 
+
+void callback(char* topic, byte* payload, unsigned int length) {
+
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+  char buff_p[length];
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+    buff_p[i] = (char)payload[i];
+  }
+  Serial.println();
+  buff_p[length] = '\0';
+  String msg_p = String(buff_p);
+
+
+  int bgColor = TFT_BLACK;
+  int textColor = TFT_YELLOW;    // initializee the text color to white
+
+  tft.fillScreen(bgColor);
+  tft.setTextColor(textColor, bgColor);
+  tft.setTextSize(2);
+
+  tft.setCursor((320 - tft.textWidth("Message received: ")) / 2, 90);
+  tft.print("Message received: " );
+  tft.setCursor((320 - tft.textWidth(msg_p)) / 2, 120);
+  tft.print(msg_p); // Print receved payload
+
+}
+
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
@@ -100,6 +130,7 @@ void setup() {
   }
 
   client.setServer(mqtt_server, 1883); // Connect the MQTT Server
+  client.setCallback(callback);
 
 }
 
@@ -125,4 +156,5 @@ void loop() {
   client.loop();
 
   publishMessages();
+
 }
