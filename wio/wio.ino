@@ -19,6 +19,8 @@ const char* mqtt_server = MQTT_SERVER;
 const char* topicOut = TOPIC_OUT;
 const char* topicIn = TOPIC_IN;
 
+boolean isAlarmActivated = false;
+
 WiFiMulti wifiMulti;
 
 TFT_eSPI tft;
@@ -62,6 +64,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
     digitalWrite(D0, HIGH);
   } else if (msg_p == "TURN OFF") {
     digitalWrite(D0, LOW);
+  } else if (msg_p == "ALARM ON") {
+    isAlarmActivated = true;
+  } else if (msg_p == "ALARM OFF") {
+    isAlarmActivated = false;
   }
 
   int textColor = TFT_YELLOW;  // initializee the text color to white
@@ -119,7 +125,7 @@ void setup() {
   /*while (!Serial) {  // Wait for Serial to be ready
     delay(500);
   };*/
-   delay(2000);
+  delay(2000);
   Serial.println("Serial is ready.");
 
   tft.begin();
@@ -156,10 +162,13 @@ void setup() {
   //pinMode(D0, OUTPUT);
   pinMode(PIR_MOTION_SENSOR, INPUT);
 
-    pinMode(WIO_BUZZER, OUTPUT);
+  pinMode(WIO_BUZZER, OUTPUT);
 }
 
 void loop() {
+
+  long nowTime = millis();
+
   while (wifiMulti.run() != WL_CONNECTED) {
     Serial.println("WiFi not connected!");
     lostConnection = true;
@@ -182,12 +191,18 @@ void loop() {
 
   publishMessages();
 
-  if (digitalRead(PIR_MOTION_SENSOR)){  //if it detects the moving people?
-    Serial.println("Something is moving!!");
-     analogWrite(WIO_BUZZER, 128);}
-  else{
-    Serial.println("Watching...");
-     analogWrite(WIO_BUZZER, 0);
-     }
-  delay(200);
+  if (isAlarmActivated) {
+    if (digitalRead(PIR_MOTION_SENSOR)) {
+      tft.fillScreen(TFT_RED);
+      Serial.println("Something is moving!!");
+      analogWrite(WIO_BUZZER, 128);
+      delay(200);
+      analogWrite(WIO_BUZZER, 0);
+    } else {
+      tft.fillScreen(TFT_GREEN);
+      Serial.println("Watching...");
+      analogWrite(WIO_BUZZER, 0);
+    }
+    delay(200);
+  }
 }
