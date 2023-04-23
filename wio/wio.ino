@@ -4,6 +4,8 @@
 #include "TFT_eSPI.h"
 #include <PubSubClient.h>
 
+#define PIR_MOTION_SENSOR D0  //Use pin D0 to receive the signal from the module
+
 const char* ssid_mobile = SSID_MOBILE;
 const char* password_mobile = PASSWORD_MOBILE;
 
@@ -44,35 +46,34 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 
   int bgColor = TFT_BLACK;
-  if(msg_p=="red"){
+  if (msg_p == "red") {
     bgColor = TFT_RED;
-  } else if(msg_p=="green"){
+  } else if (msg_p == "green") {
     bgColor = TFT_GREEN;
-  } else if(msg_p=="blue"){
+  } else if (msg_p == "blue") {
     bgColor = TFT_BLUE;
-  } else if(msg_p=="yellow"){
+  } else if (msg_p == "yellow") {
     bgColor = TFT_YELLOW;
-  }else if(msg_p=="white"){
+  } else if (msg_p == "white") {
     bgColor = TFT_WHITE;
-  }else if(msg_p=="orange"){
+  } else if (msg_p == "orange") {
     bgColor = TFT_ORANGE;
-  }else if(msg_p=="TURN ON"){
-    digitalWrite(D0, HIGH); 
-  } else if(msg_p=="TURN OFF"){
-    digitalWrite(D0, LOW); 
+  } else if (msg_p == "TURN ON") {
+    digitalWrite(D0, HIGH);
+  } else if (msg_p == "TURN OFF") {
+    digitalWrite(D0, LOW);
   }
 
-  int textColor = TFT_YELLOW;    // initializee the text color to white
+  int textColor = TFT_YELLOW;  // initializee the text color to white
 
   tft.fillScreen(bgColor);
   tft.setTextColor(textColor, bgColor);
   tft.setTextSize(2);
 
   tft.setCursor((320 - tft.textWidth("Message received: ")) / 2, 90);
-  tft.print("Message received: " );
+  tft.print("Message received: ");
   tft.setCursor((320 - tft.textWidth(msg_p)) / 2, 120);
-  tft.print(msg_p); // Print receved payload
-
+  tft.print(msg_p);  // Print receved payload
 }
 
 void reconnect() {
@@ -99,7 +100,7 @@ void reconnect() {
   }
 }
 
-void publishMessages(){
+void publishMessages() {
   long nowTime = millis();
   if (nowTime - lastMessageTime > 2000) {
     lastMessageTime = nowTime;
@@ -115,12 +116,13 @@ void publishMessages(){
 
 void setup() {
   Serial.begin(115200);
-  while (!Serial) {  // Wait for Serial to be ready
+  /*while (!Serial) {  // Wait for Serial to be ready
     delay(500);
-  };
+  };*/
+   delay(2000);
   Serial.println("Serial is ready.");
 
- tft.begin();
+  tft.begin();
   tft.fillScreen(TFT_BLACK);
   tft.setRotation(3);
 
@@ -136,7 +138,7 @@ void setup() {
   //Serial.println(SSID_MOBILE);
   tft.setCursor((320 - tft.textWidth("Connecting to Wi-Fi..")) / 2, 120);
   tft.print("Connecting to Wi-Fi..");
-  
+
   if (wifiMulti.run() == WL_CONNECTED) {
     Serial.println("");
     Serial.println("WiFi connected");
@@ -147,28 +149,31 @@ void setup() {
     tft.print("Connected!");
   }
 
-  client.setServer(mqtt_server, 1883); // Connect the MQTT Server
+  client.setServer(mqtt_server, 1883);  // Connect the MQTT Server
   client.setCallback(callback);
 
 
-  pinMode(D0, OUTPUT);
+  //pinMode(D0, OUTPUT);
+  pinMode(PIR_MOTION_SENSOR, INPUT);
+
+    pinMode(WIO_BUZZER, OUTPUT);
 }
 
 void loop() {
   while (wifiMulti.run() != WL_CONNECTED) {
     Serial.println("WiFi not connected!");
-            lostConnection = true;
+    lostConnection = true;
     delay(1000);
   }
 
-    if(lostConnection == true){
-       Serial.println("");
-        Serial.println("WiFi re-connected");
-        Serial.println("IP address: ");
-        Serial.println(WiFi.localIP());
+  if (lostConnection == true) {
+    Serial.println("");
+    Serial.println("WiFi re-connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
 
-      lostConnection = false;
-    }
+    lostConnection = false;
+  }
 
   if (!client.connected()) {
     reconnect();
@@ -177,4 +182,12 @@ void loop() {
 
   publishMessages();
 
+  if (digitalRead(PIR_MOTION_SENSOR)){  //if it detects the moving people?
+    Serial.println("Something is moving!!");
+     analogWrite(WIO_BUZZER, 128);}
+  else{
+    Serial.println("Watching...");
+     analogWrite(WIO_BUZZER, 0);
+     }
+  delay(200);
 }
