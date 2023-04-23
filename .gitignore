@@ -19,3 +19,5 @@ web-build/
 #vscode history
 .history/
 
+#Wio env variables header file
+wio/myEnv.h
