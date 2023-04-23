@@ -4,7 +4,9 @@
 #include "TFT_eSPI.h"
 #include <PubSubClient.h>
 
-#define PIR_MOTION_SENSOR D0  //Use pin D0 to receive the signal from the module
+#define PIR_MOTION_SENSOR D0
+#define RED_LED PIN_WIRE_SCL
+
 
 const char* ssid_mobile = SSID_MOBILE;
 const char* password_mobile = PASSWORD_MOBILE;
@@ -60,10 +62,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
     bgColor = TFT_WHITE;
   } else if (msg_p == "orange") {
     bgColor = TFT_ORANGE;
-  } else if (msg_p == "TURN ON") {
-    digitalWrite(D0, HIGH);
-  } else if (msg_p == "TURN OFF") {
-    digitalWrite(D0, LOW);
+  } else if (msg_p == "LED ON") {
+    digitalWrite(RED_LED, HIGH);
+  } else if (msg_p == "LED OFF") {
+    digitalWrite(RED_LED, LOW);
   } else if (msg_p == "ALARM ON") {
     isAlarmActivated = true;
   } else if (msg_p == "ALARM OFF") {
@@ -159,7 +161,7 @@ void setup() {
   client.setCallback(callback);
 
 
-  //pinMode(D0, OUTPUT);
+  pinMode(RED_LED, OUTPUT);
   pinMode(PIR_MOTION_SENSOR, INPUT);
 
   pinMode(WIO_BUZZER, OUTPUT);
@@ -196,8 +198,11 @@ void loop() {
       tft.fillScreen(TFT_RED);
       Serial.println("Something is moving!!");
       analogWrite(WIO_BUZZER, 128);
+      digitalWrite(RED_LED, HIGH);
       delay(200);
       analogWrite(WIO_BUZZER, 0);
+      digitalWrite(RED_LED, LOW);
+
     } else {
       tft.fillScreen(TFT_GREEN);
       Serial.println("Watching...");
