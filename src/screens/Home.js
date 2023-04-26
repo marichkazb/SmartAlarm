@@ -15,6 +15,7 @@ import {
 } from 'native-base';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import homeImage from '../assets/HomeBackground.png';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function Home(props) {
     const [show, setShow] = React.useState(false);
@@ -54,6 +55,14 @@ function Home(props) {
                     <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
                         <Ionicons name="ios-settings-outline" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
                         <Button onPress={() => navigation.navigate('Settings')} variant="subtle" colorScheme="blue">Settings</Button>
+                    </HStack>
+                </Center>
+                <Center
+                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
+                    rounded="lg" shaddow="1">
+                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
+                        <MaterialCommunityIcons name="motion-sensor" size={55} color="#2420FF" style={{ paddingBottom: 30 }}  />
+                        <Button onPress={() => navigation.navigate('Sensors')} variant="subtle" colorScheme="blue">Sensors</Button>
                     </HStack>
                 </Center>
             </ScrollView>
