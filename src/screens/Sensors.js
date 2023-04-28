@@ -19,6 +19,14 @@ function Sensors() {
             setValue(message.payloadString);
     }
 
+    function publishTopic(topic, message) {
+        // Create a new MQTT message
+        const newMessage = new Paho.Message(message);
+        newMessage.destinationName = topic;
+
+        // Publish the new message
+        client.send(newMessage);
+    }
 
     useEffect(() => {
         client.connect( {
@@ -26,6 +34,7 @@ function Sensors() {
                 console.log("Connected!");
                 client.subscribe("sensor-status/value");
                 client.onMessageArrived = onMessage;
+                publishTopic("sensor/turnOn", "Turn LED on");
             },
             onFailure: () => {
                 console.log("Failed to connect!");
