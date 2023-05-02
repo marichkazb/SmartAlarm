@@ -30,6 +30,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@testing-library/dom": "^9.2.0",
+    "@testing-library/jest-native": "^5.4.2",
+    "@testing-library/react": "^14.0.0",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "eslint": "^8.38.0",
