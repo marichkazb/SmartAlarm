@@ -1,9 +1,7 @@
 import Paho from "paho-mqtt";
-
 import { useState, useEffect } from "react";
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function Sensors() {
     let client;
@@ -12,11 +10,13 @@ function Sensors() {
         Number(8000),
         `client-id-${parseInt(Math.random() * 100)}`
     );
-    const [value, setValue] = useState(0);
+
+    const topic1 = 'sensor-status/motion';
+    const [message, setMessage] = useState('')
 
     function onMessage(message) {
-        if (message.destinationName === "sensor-status/value")
-            setValue(message.payloadString);
+        if (message.destinationName === topic1)
+            setMessage(message.payloadString);
     }
 
     function publishTopic(topic, message) {
@@ -32,23 +32,30 @@ function Sensors() {
         client.connect( {
             onSuccess: () => {
                 console.log("Connected!");
-                client.subscribe("sensor-status/value");
+                client.subscribe(topic1);
                 client.onMessageArrived = onMessage;
-                publishTopic("sensor/turnOn", "Turn LED on");
             },
             onFailure: () => {
                 console.log("Failed to connect!");
             }
         });
+        return () => {
+            client.disconnect();
+        };
     }, [])
-
 
     return (
         <View style={styles.container}>
-            <Text>Sensor status is: {value}</Text>
-            <StatusBar style="auto" />
+            <View style={styles.contentContainer}>
+                <View style={styles.itemContainer}>
+                    <View style={styles.itemWrapper}>
+                        <MaterialCommunityIcons name="motion-sensor" size={24} color="white" />
+                        <Text>Motion sensor status is: {message}</Text>
+                    </View>
+                </View>
+            </View>
         </View>
-    );
+    )
 }
 
 export default Sensors;
@@ -57,7 +64,28 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+//alignItems: 'center',
+//justifyContent: 'center',
     },
+    contentContainer: {
+        paddingVertical: 10, marginHorizontal: 10
+    },
+    itemWrapper: {
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    itemContainer: {
+        paddingTop: 20,
+        backgroundColor: '#7CC6FE',
+        shadowRadius: 3,
+        shadowOpacity: '10%',
+        shadowOffset: { width: 0, height: 4 },
+        shadowColor: '#d8d8d8',
+        elevation: 2,
+        borderRadius: 20,
+        padding: 20,
+        marginBottom: 20
+    }
 });
+
