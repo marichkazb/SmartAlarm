@@ -1,7 +1,7 @@
 import Paho from "paho-mqtt";
 import { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 function Sensors() {
     let client;
@@ -12,19 +12,24 @@ function Sensors() {
     );
 
     const topic1 = 'sensor-status/motion';
+    const topic2 = 'sensor-status/button';
     const [message, setMessage] = useState('')
+    const [message2, setMessage2] = useState('')
+
 
     function onMessage(message) {
         if (message.destinationName === topic1)
             setMessage(message.payloadString);
+        if (message.destinationName === topic2)
+            setMessage2(message.payloadString);
     }
 
     function publishTopic(topic, message) {
-        // Create a new MQTT message
+// Create a new MQTT message
         const newMessage = new Paho.Message(message);
         newMessage.destinationName = topic;
 
-        // Publish the new message
+// Publish the new message
         client.send(newMessage);
     }
 
@@ -33,6 +38,7 @@ function Sensors() {
             onSuccess: () => {
                 console.log("Connected!");
                 client.subscribe(topic1);
+                client.subscribe(topic2);
                 client.onMessageArrived = onMessage;
             },
             onFailure: () => {
@@ -53,6 +59,14 @@ function Sensors() {
                         <Text>Motion sensor status is: {message}</Text>
                     </View>
                 </View>
+
+                <View style={styles.itemContainer}>
+                    <View style={styles.itemWrapper}>
+                        <Ionicons name="radio-button-on" size={24} color="white" />
+                        <Text>Button status is: {message2}</Text>
+                    </View>
+                </View>
+
             </View>
         </View>
     )
@@ -88,4 +102,3 @@ const styles = StyleSheet.create({
         marginBottom: 20
     }
 });
-
