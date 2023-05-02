@@ -1,2 +1,2 @@
-mport History from './src/screens/History.js'
+import History from './src/screens/History.js'
 
