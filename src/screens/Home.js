@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import {
     Button,
     HStack,
@@ -11,13 +11,13 @@ import {
     CloseIcon,
     VStack,
     Alert,
-    Collapse, Box
+    Collapse, Box, Icon
 } from 'native-base';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import homeImage from '../assets/HomeBackground.png';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Paho from "paho-mqtt";
-
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 function Home(props) {
     const [show, setShow] = React.useState(false);
@@ -52,6 +52,30 @@ function Home(props) {
         };
     }, [])
 
+    function publishTopic(topic, message) {
+        const newMessage = new Paho.Message(message);
+        newMessage.destinationName = topic;
+        client.send(newMessage);
+    }
+    const turnOn = () => {
+        if (client.isConnected()) {
+            const topic ='wio-command/alarm-activation';
+            const message ='on';
+            publishTopic(topic, message);
+            client.disconnect();
+        }
+        else client.connect();
+    };
+
+    const turnOff = () => {
+        if (client.isConnected()) {
+            const topic ='wio-command/alarm-activation';
+            const message ='off';
+            publishTopic(topic, message);
+            client.disconnect();
+        }
+        else client.connect();
+    };
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
@@ -71,9 +95,19 @@ function Home(props) {
                 <Center
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
                     rounded="lg" shaddow="1">
-                    <MaterialIcons name="security" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
+                    <MaterialIcons name="security" size={50} color="#2420FF" style={{ paddingBottom: 10 }} />
                     <Text>Current status:</Text>
                     <Text>{message}</Text>
+                    <Text></Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Button style={{ backgroundColor: '#D8E59E', padding: 10, borderRadius: 5, marginRight: 10 }} onPress={turnOn}>
+                            <Text style={{ color: '#44601A' }}>Turn on</Text>
+                        </Button>
+                        <Button style={{ backgroundColor: '#F3BBB9', padding: 10, borderRadius: 5 }} onPress={turnOff}>
+                            <Text style={{ color: '#E15551' }}>Turn off</Text>
+                        </Button>
+                    </View>
+
                 </Center>
                 <Center
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
