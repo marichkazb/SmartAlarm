@@ -1,7 +1,9 @@
 import Paho from "paho-mqtt";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 function Sensors() {
     let client;
@@ -13,15 +15,30 @@ function Sensors() {
 
     const topic1 = 'sensor-status/motion';
     const topic2 = 'sensor-status/button';
+    const topic3 = 'sensor-status/greenLED';
+    const topic4 = 'sensor-status/redLED';
+    const topic5 = 'sensor-status/angleSensor';
+    const topic6 = 'sensor-status/speaker';
     const [message, setMessage] = useState('')
     const [message2, setMessage2] = useState('')
-
+    const [message3, setMessage3] = useState('')
+    const [message4, setMessage4] = useState('')
+    const [message5, setMessage5] = useState('')
+    const [message6, setMessage6] = useState('')
 
     function onMessage(message) {
         if (message.destinationName === topic1)
             setMessage(message.payloadString);
         if (message.destinationName === topic2)
             setMessage2(message.payloadString);
+        if (message.destinationName === topic3)
+            setMessage3(message.payloadString);
+        if (message.destinationName === topic4)
+            setMessage4(message.payloadString);
+        if (message.destinationName === topic5)
+            setMessage5(message.payloadString);
+        if (message.destinationName === topic6)
+            setMessage6(message.payloadString);
     }
 
     function publishTopic(topic, message) {
@@ -39,6 +56,10 @@ function Sensors() {
                 console.log("Connected!");
                 client.subscribe(topic1);
                 client.subscribe(topic2);
+                client.subscribe(topic3);
+                client.subscribe(topic4);
+                client.subscribe(topic5);
+                client.subscribe(topic6);
                 client.onMessageArrived = onMessage;
             },
             onFailure: () => {
@@ -52,6 +73,11 @@ function Sensors() {
 
     return (
         <View style={styles.container}>
+            <View style={styles.titleContainer}>
+                <Text style={styles.pageTitle}>Sensors</Text>
+                <Text style={styles.pageDesc}>View the status of the sensors</Text>
+            </View>
+
             <View style={styles.contentContainer}>
                 <View style={styles.itemContainer}>
                     <View style={styles.itemWrapper}>
@@ -67,6 +93,34 @@ function Sensors() {
                     </View>
                 </View>
 
+                <View style={styles.itemContainer}>
+                    <View style={styles.itemWrapper}>
+                        <MaterialCommunityIcons name="led-off" size={24} color="#09814A" />
+                        <Text>Green LED status is: {message3}</Text>
+                    </View>
+                </View>
+
+                <View style={styles.itemContainer}>
+                    <View style={styles.itemWrapper}>
+                        <MaterialCommunityIcons name="led-off" size={24} color="#ED474A" />
+                        <Text>Red LED status is: {message4}</Text>
+                    </View>
+                </View>
+
+                <View style={styles.itemContainer}>
+                    <View style={styles.itemWrapper}>
+                        <MaterialCommunityIcons name="spirit-level" size={24} color="white" />
+                        <Text>Angle sensor status is: {message5}</Text>
+                    </View>
+                </View>
+
+                <View style={styles.itemContainer}>
+                    <View style={styles.itemWrapper}>
+                        <FontAwesome5 name="volume-up" size={24} color="white" />
+                        <Text>Speaker status is: {message6}</Text>
+                    </View>
+                </View>
+
             </View>
         </View>
     )
@@ -77,9 +131,7 @@ export default Sensors;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-//alignItems: 'center',
-//justifyContent: 'center',
+        backgroundColor: '#fff'
     },
     contentContainer: {
         paddingVertical: 10, marginHorizontal: 10
@@ -100,5 +152,16 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 20,
         marginBottom: 20
+    },
+    titleContainer: {
+        padding: 10
+    },
+    pageTitle: {
+        fontSize: 50,
+        fontWeight: '700',
+    },
+    pageDesc: { color: '#797979',
+        fontSize: 25,
+        fontWeight: '300',
     }
 });
