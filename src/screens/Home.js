@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import {
     Button,
@@ -16,18 +16,50 @@ import {
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import homeImage from '../assets/HomeBackground.png';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Paho from "paho-mqtt";
+
 
 function Home(props) {
     const [show, setShow] = React.useState(false);
     const { navigation } = props;
+
+    let client;
+    client = new Paho.Client(
+        "broker.hivemq.com",
+        Number(8000),
+        `client-id-${parseInt(Math.random() * 100)}`
+    );
+
+    const topic = 'sensor-status/alarm';
+    const [message, setMessage] = useState('not connected');
+    function onMessage(message) {
+        if (message.destinationName === topic)
+            setMessage(message.payloadString);
+    }
+    useEffect(() => {
+        client.connect( {
+            onSuccess: () => {
+                console.log("Connected!");
+                client.subscribe(topic);
+                client.onMessageArrived = onMessage;
+            },
+            onFailure: () => {
+                console.log("Failed to connect!");
+            }
+        });
+        return () => {
+            client.disconnect();
+        };
+    }, [])
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
                 <Text style={styles.pageTitle}>Home</Text>
                 <Avatar
                     bg="cyan.500" source={{
-                        uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-                    }}>
+                    uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+                }}>
                     TE
                 </Avatar>
             </View>
@@ -37,11 +69,11 @@ function Home(props) {
             <Text style={[styles.pageTitle, { paddingBottom: 15 }]}>Control Panel</Text>
             <ScrollView horizontal={true} style={{ flex: 1 }} pagingEnabled={true}>
                 <Center
-                    p="5" m="2" borderRadius="md" bg="lightText" shadow="3"
-                    rounded="lg" >
-                    <MaterialIcons name="security" size={55} color="#2420FF" style={{ paddingBottom: 20 }} />
-                    <Text>Activate the alarm</Text>
-                    <Switch size="sm" colorScheme="blue" />
+                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
+                    rounded="lg" shaddow="1">
+                    <MaterialIcons name="security" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
+                    <Text>Current status:</Text>
+                    <Text>{message}</Text>
                 </Center>
                 <Center
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
@@ -87,9 +119,9 @@ function Home(props) {
                                 </HStack>
                                 <IconButton
                                     variant="top-accent" _focus={{
-                                        borderWidth: 0
-                                    }} icon={<CloseIcon size="3" />} _icon={{
-                                        color: 'coolGray.600' }} onPress={() => setShow(false)}
+                                    borderWidth: 0
+                                }} icon={<CloseIcon size="3" />} _icon={{
+                                    color: 'coolGray.600' }} onPress={() => setShow(false)}
                                 />
                             </HStack>
                         </VStack>
