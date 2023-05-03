@@ -18,9 +18,6 @@ boolean lostConnection = false;
 
 const char* mqtt_server = MQTT_SERVER;
 
-const char* topicOut = TOPIC_OUT;
-const char* topicIn = TOPIC_IN;
-
 boolean isAlarmActivated = false;
 
 WiFiMulti wifiMulti;
@@ -66,9 +63,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
     digitalWrite(RED_LED, HIGH);
   } else if (msg_p == "LED OFF") {
     digitalWrite(RED_LED, LOW);
-  } else if (msg_p == "ALARM ON") {
+  } else if (msg_p == "on") {
     isAlarmActivated = true;
-  } else if (msg_p == "ALARM OFF") {
+  } else if (msg_p == "off") {
     isAlarmActivated = false;
   }
 
@@ -95,9 +92,9 @@ void reconnect() {
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
       // Once connected, publish an announcement...
-      client.publish(topicOut, "hello world");
+      //0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000client.publish(topicOut, "hello world");
       // ... and resubscribe
-      client.subscribe(topicIn);
+      client.subscribe(TOPIC_ALARM_ACTIVATION);
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -107,6 +104,7 @@ void reconnect() {
     }
   }
 }
+
 
 void publishMessages() {
   long nowTime = millis();
@@ -124,16 +122,12 @@ void publishMessages() {
 
 void setup() {
   Serial.begin(115200);
-  /*while (!Serial) {  // Wait for Serial to be ready
-    delay(500);
-  };*/
+  Serial.println("Serial is starting...");
   delay(2000);
-  Serial.println("Serial is ready.");
 
   tft.begin();
   tft.fillScreen(TFT_BLACK);
   tft.setRotation(3);
-
 
   wifiMulti.addAP(SSID_MOBILE, PASSWORD_MOBILE);
   wifiMulti.addAP(SSID_HOME, PASSWORD_HOME);
@@ -160,12 +154,12 @@ void setup() {
   client.setServer(mqtt_server, 1883);  // Connect the MQTT Server
   client.setCallback(callback);
 
-
   pinMode(RED_LED, OUTPUT);
   pinMode(PIR_MOTION_SENSOR, INPUT);
 
   pinMode(WIO_BUZZER, OUTPUT);
 }
+
 
 void loop() {
 
@@ -194,6 +188,7 @@ void loop() {
   publishMessages();
 
   if (isAlarmActivated) {
+    
     if (digitalRead(PIR_MOTION_SENSOR)) {
       tft.fillScreen(TFT_RED);
       Serial.println("Something is moving!!");
