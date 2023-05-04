@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView} from 'react-native';
 import {
     Button,
     HStack,
@@ -11,13 +11,12 @@ import {
     CloseIcon,
     VStack,
     Alert,
-    Collapse, Box, Icon
+    Collapse, Box,
 } from 'native-base';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import homeImage from '../assets/HomeBackground.png';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Paho from "paho-mqtt";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 function Home(props) {
     const [show, setShow] = React.useState(false);
@@ -30,15 +29,15 @@ function Home(props) {
         `client-id-${parseInt(Math.random() * 100)}`
     );
 
-
     const topic = 'sensor-status/alarm';
     const [message, setMessage] = useState('not connected');
+
     function onMessage(message) {
         if (message.destinationName === topic)
             setMessage(message.payloadString);
     }
+
     useEffect(() => {
-        console.log('use effect');
         client.connect( {
             onSuccess: () => {
                 console.log("Connected!");
@@ -57,9 +56,9 @@ function Home(props) {
     function publishTopic(topic, message) {
         const newMessage = new Paho.Message(message);
         newMessage.destinationName = topic;
-        console.log(newMessage);
         client.send(newMessage);
     }
+
     const turnOn = () => {
         if (!client.isConnected()) {
             client.connect()
@@ -67,30 +66,17 @@ function Home(props) {
         const topic ='wio-command/alarm-activation';
         const message ='on';
         publishTopic(topic, message);
-        //client.disconnect();
     };
 
     const turnOff = () => {
-        console.log(client);
         if (!client.isConnected()) {
             client.connect()
         }
         const topic ='wio-command/alarm-activation';
         const message ='off';
         publishTopic(topic, message);
-       // client.disconnect();
     };
 
-    function onConnectionLost(responseObject) {
-        if (responseObject.errorCode !== 0) {
-            console.log("onConnectionLost:" + responseObject.errorMessage);
-        }
-    }
-
-// called when a message arrives
-    function onMessageArrived(message) {
-        console.log("onMessageArrived:" + message.payloadString);
-    }
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
