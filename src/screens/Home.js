@@ -30,6 +30,7 @@ function Home(props) {
         `client-id-${parseInt(Math.random() * 100)}`
     );
 
+
     const topic = 'sensor-status/alarm';
     const [message, setMessage] = useState('not connected');
     function onMessage(message) {
@@ -37,6 +38,7 @@ function Home(props) {
             setMessage(message.payloadString);
     }
     useEffect(() => {
+        console.log('use effect');
         client.connect( {
             onSuccess: () => {
                 console.log("Connected!");
@@ -50,32 +52,45 @@ function Home(props) {
         return () => {
             client.disconnect();
         };
-    }, [])
+    }, )
 
     function publishTopic(topic, message) {
         const newMessage = new Paho.Message(message);
         newMessage.destinationName = topic;
+        console.log(newMessage);
         client.send(newMessage);
     }
     const turnOn = () => {
-        if (client.isConnected()) {
-            const topic ='wio-command/alarm-activation';
-            const message ='on';
-            publishTopic(topic, message);
-            client.disconnect();
+        if (!client.isConnected()) {
+            client.connect()
         }
-        else client.connect();
+        const topic ='wio-command/alarm-activation';
+        const message ='on';
+        publishTopic(topic, message);
+        //client.disconnect();
     };
 
     const turnOff = () => {
-        if (client.isConnected()) {
-            const topic ='wio-command/alarm-activation';
-            const message ='off';
-            publishTopic(topic, message);
-            client.disconnect();
+        console.log(client);
+        if (!client.isConnected()) {
+            client.connect()
         }
-        else client.connect();
+        const topic ='wio-command/alarm-activation';
+        const message ='off';
+        publishTopic(topic, message);
+       // client.disconnect();
     };
+
+    function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+        }
+    }
+
+// called when a message arrives
+    function onMessageArrived(message) {
+        console.log("onMessageArrived:" + message.payloadString);
+    }
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
@@ -100,10 +115,10 @@ function Home(props) {
                     <Text>{message}</Text>
                     <Text></Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Button style={{ backgroundColor: '#D8E59E', padding: 10, borderRadius: 5, marginRight: 10 }} onPress={turnOn}>
+                        <Button style={{ backgroundColor: '#D8E59E', padding: 10, borderRadius: 5, marginRight: 10 }} onPress={() => turnOn()}>
                             <Text style={{ color: '#44601A' }}>Turn on</Text>
                         </Button>
-                        <Button style={{ backgroundColor: '#F3BBB9', padding: 10, borderRadius: 5 }} onPress={turnOff}>
+                        <Button style={{ backgroundColor: '#F3BBB9', padding: 10, borderRadius: 5 }} onPress={() => turnOff()}>
                             <Text style={{ color: '#E15551' }}>Turn off</Text>
                         </Button>
                     </View>
