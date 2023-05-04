@@ -19,12 +19,12 @@ function Sensors() {
     const topic4 = 'sensor-status/redLED';
     const topic5 = 'sensor-status/angleSensor';
     const topic6 = 'sensor-status/speaker';
-    const [message, setMessage] = useState('')
-    const [message2, setMessage2] = useState('')
-    const [message3, setMessage3] = useState('')
-    const [message4, setMessage4] = useState('')
-    const [message5, setMessage5] = useState('')
-    const [message6, setMessage6] = useState('')
+    const [message, setMessage] = useState('not connected')
+    const [message2, setMessage2] = useState('not connected')
+    const [message3, setMessage3] = useState('not connected')
+    const [message4, setMessage4] = useState('not connected')
+    const [message5, setMessage5] = useState('not connected')
+    const [message6, setMessage6] = useState('not connected')
 
     function onMessage(message) {
         if (message.destinationName === topic1)
@@ -69,7 +69,7 @@ function Sensors() {
         return () => {
             client.disconnect();
         };
-    }, [])
+    })
 
     return (
         <View style={styles.container}>

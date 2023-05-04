@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView} from 'react-native';
 import {
     Button,
     HStack,
@@ -11,13 +11,12 @@ import {
     CloseIcon,
     VStack,
     Alert,
-    Collapse, Box, Icon
+    Collapse, Box,
 } from 'native-base';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import homeImage from '../assets/HomeBackground.png';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Paho from "paho-mqtt";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 function Home(props) {
     const [show, setShow] = React.useState(false);
@@ -32,10 +31,12 @@ function Home(props) {
 
     const topic = 'sensor-status/alarm';
     const [message, setMessage] = useState('not connected');
+
     function onMessage(message) {
         if (message.destinationName === topic)
             setMessage(message.payloadString);
     }
+
     useEffect(() => {
         client.connect( {
             onSuccess: () => {
@@ -50,32 +51,32 @@ function Home(props) {
         return () => {
             client.disconnect();
         };
-    }, [])
+    }, )
 
     function publishTopic(topic, message) {
         const newMessage = new Paho.Message(message);
         newMessage.destinationName = topic;
         client.send(newMessage);
     }
+
     const turnOn = () => {
-        if (client.isConnected()) {
-            const topic ='wio-command/alarm-activation';
-            const message ='on';
-            publishTopic(topic, message);
-            client.disconnect();
+        if (!client.isConnected()) {
+            client.connect()
         }
-        else client.connect();
+        const topic ='wio-command/alarm-activation';
+        const message ='on';
+        publishTopic(topic, message);
     };
 
     const turnOff = () => {
-        if (client.isConnected()) {
-            const topic ='wio-command/alarm-activation';
-            const message ='off';
-            publishTopic(topic, message);
-            client.disconnect();
+        if (!client.isConnected()) {
+            client.connect()
         }
-        else client.connect();
+        const topic ='wio-command/alarm-activation';
+        const message ='off';
+        publishTopic(topic, message);
     };
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
@@ -100,10 +101,10 @@ function Home(props) {
                     <Text>{message}</Text>
                     <Text></Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Button style={{ backgroundColor: '#D8E59E', padding: 10, borderRadius: 5, marginRight: 10 }} onPress={turnOn}>
+                        <Button style={{ backgroundColor: '#D8E59E', padding: 10, borderRadius: 5, marginRight: 10 }} onPress={() => turnOn()}>
                             <Text style={{ color: '#44601A' }}>Turn on</Text>
                         </Button>
-                        <Button style={{ backgroundColor: '#F3BBB9', padding: 10, borderRadius: 5 }} onPress={turnOff}>
+                        <Button style={{ backgroundColor: '#F3BBB9', padding: 10, borderRadius: 5 }} onPress={() => turnOff()}>
                             <Text style={{ color: '#E15551' }}>Turn off</Text>
                         </Button>
                     </View>
