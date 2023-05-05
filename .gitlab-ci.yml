@@ -1,7 +1,17 @@
+image: node:alpine
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .npm
+
 stages:
   - test
   - build
   - deploy
+
+before_script:
+  - npm ci --cache .npm
 
 build-job:
   stage: build
