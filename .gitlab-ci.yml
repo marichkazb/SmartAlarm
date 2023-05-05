@@ -13,11 +13,14 @@ stages:
 before_script:
   - npm ci --cache .npm
 
-build-job:
+eas-build:
   stage: build
+  tags:
+    - docker
   script:
-    - echo "Building the code..."
-    - echo "Build complete."
+    - apk add --no-cache bash git
+    # Note: there is a limit of 30 EAS builds per month:
+    - npx eas-cli build --platform all --profile preview --non-interactive
 
 unit-test-job:
   stage: test
