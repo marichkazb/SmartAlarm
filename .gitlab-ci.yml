@@ -1,0 +1,31 @@
+stages:
+  - test
+  - build
+  - deploy
+
+build-job:
+  stage: build
+  script:
+    - echo "Building the code..."
+    - echo "Build complete."
+
+unit-test-job:
+  stage: test
+  script:
+    - echo "Running unit tests... It should take 60 seconds."
+    - sleep 60
+    - echo "Code coverage is 90%"
+
+lint-test-job:
+  stage: test
+  script:
+    - echo "Linting code... It should take 10 seconds."
+    - sleep 10
+    - echo "No lint issues found."
+
+deploy-job:
+  stage: deploy
+  environment: production
+  script:
+    - echo "Deploying application..."
+    - echo "Application successfully deployed."
