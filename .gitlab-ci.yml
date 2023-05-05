@@ -47,9 +47,13 @@ lint-test-job:
     - sleep 10
     - echo "No lint issues found."
 
-deploy-job:
+web-deploy:
   stage: deploy
-  environment: production
+  tags:
+    - docker
+  environment:
+    name: production
+    url: https://smartalarm.netlify.app/
+  # needs: ["web-build"] # not necessary, since deploy stage happens only after build stage
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - npx netlify-cli deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod --dir=web-build/
