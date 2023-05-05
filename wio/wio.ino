@@ -117,7 +117,7 @@ void reconnect() {
 
 
 void publishMessages() {
-  long nowTime = millis();
+  /*long nowTime = millis();
   if (nowTime - lastMessageTime > 2000) {
     lastMessageTime = nowTime;
     ++messageCounter;
@@ -126,8 +126,8 @@ void publishMessages() {
 
     Serial.print("Publish message: ");
     Serial.println(newMessage);
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////client.publish(topicOut, newMessage);
-  }
+    client.publish(topicOut, newMessage);
+  }*/
 }
 
 void setup() {
@@ -179,10 +179,11 @@ void setup() {
 }
 
 
-void angleMonitor(){
+void angleMonitor() {
   float x_angle = lis.getAccelerationX() * 180 / PI;
   float y_angle = lis.getAccelerationY() * 180 / PI;
   float z_angle = lis.getAccelerationZ() * 180 / PI;
+  long nowTime = millis();
 
   if (nowTime - lastAngleTime > 300) {
 
@@ -208,7 +209,6 @@ void angleMonitor(){
       client.publish(TOPIC_ANGLE, "off");
     }
   }
-
 }
 
 void loop() {
@@ -259,15 +259,16 @@ void loop() {
       analogWrite(WIO_BUZZER, 0);
       client.publish(TOPIC_LED_RED, "off");
     }
-    
+
     angleMonitor();
     delay(200);
   } else {
     digitalWrite(GREEN_LED, LOW);
     client.publish(TOPIC_LED_GREEN, "off");
+    client.publish(TOPIC_LED_RED, "off");
+    client.publish(TOPIC_MOTION, "off");
+
     client.publish(TOPIC_ALARM_STATUS, "off");
-
+    client.publish(TOPIC_ANGLE, "off");
   }
-
-
 }
