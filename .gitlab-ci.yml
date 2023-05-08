@@ -10,8 +10,8 @@ cache:
     - .npm
 
 stages:
-  - test
   - build
+  - test
   - deploy
 
 before_script:
