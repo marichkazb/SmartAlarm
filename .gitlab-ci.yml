@@ -16,22 +16,21 @@ stages:
 
 before_script:
   - npm ci --cache .npm
+  - apk add --no-cache bash git
 
 eas-build:
   stage: build
   tags:
     - docker
   script:
-    - apk add --no-cache bash git
     # Note: there is a limit of 30 EAS builds per month:
-    - npx eas-cli build --platform all --profile preview --non-interactive
+    - npx eas-cli build --platform android --profile preview --non-interactive
 
 web-build:
   stage: build
   tags:
     - docker
   script:
-    - apk add --no-cache bash git
     - npx expo export:web
   artifacts:
     paths:
