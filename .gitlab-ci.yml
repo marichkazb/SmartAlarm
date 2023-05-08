@@ -11,7 +11,6 @@ cache:
 
 stages:
   - test
-  - build
   - deploy
 
 before_script:
@@ -24,7 +23,7 @@ eas-build:
     - docker
   script:
     # Note: there is a limit of 30 EAS builds per month:
-    #- npx eas-cli build --platform all --profile preview --non-interactive
+    - npx eas-cli build --platform android --profile preview --non-interactive
 
 web-build:
   stage: build
