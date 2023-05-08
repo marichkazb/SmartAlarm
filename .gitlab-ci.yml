@@ -10,8 +10,8 @@ cache:
     - .npm
 
 stages:
-  - build
   - test
+  - build
   - deploy
 
 before_script:
@@ -24,7 +24,7 @@ eas-build:
     - docker
   script:
     # Note: there is a limit of 30 EAS builds per month:
-    - npx eas-cli build --platform android --profile preview --non-interactive
+    #- npx eas-cli build --platform all --profile preview --non-interactive
 
 web-build:
   stage: build
@@ -38,6 +38,8 @@ web-build:
 
 unit-test-job:
   stage: test
+  tags:
+    - docker
   script:
     - echo "Running unit tests... It should take 60 seconds."
     - sleep 60
@@ -45,6 +47,8 @@ unit-test-job:
 
 lint-test-job:
   stage: test
+  tags:
+    - docker
   script:
     - echo "Linting code... It should take 10 seconds."
     - sleep 10
