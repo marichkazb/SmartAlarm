@@ -4,9 +4,14 @@
 #include "TFT_eSPI.h"
 #include <PubSubClient.h>
 
+#include "LIS3DHTR.h"  //include the accelerator library
+LIS3DHTR<TwoWire> lis;
+
+#define MAX_SIZE 50  //maximum size of data
+
 #define PIR_MOTION_SENSOR D0
 #define RED_LED PIN_WIRE_SCL
-
+#define GREEN_LED D6
 
 const char* ssid_mobile = SSID_MOBILE;
 const char* password_mobile = PASSWORD_MOBILE;
@@ -18,9 +23,6 @@ boolean lostConnection = false;
 
 const char* mqtt_server = MQTT_SERVER;
 
-const char* topicOut = TOPIC_OUT;
-const char* topicIn = TOPIC_IN;
-
 boolean isAlarmActivated = false;
 
 WiFiMulti wifiMulti;
@@ -30,9 +32,14 @@ WiFiClient wioClient;
 PubSubClient client(wioClient);
 
 long lastMessageTime = 0;
+long lastAngleTime = 0;
 char newMessage[50];
 int messageCounter = 0;
 
+float angles_sum = 0;
+float original_angle = 0;
+
+boolean angleActivated = false;
 
 void callback(char* topic, byte* payload, unsigned int length) {
 
@@ -66,9 +73,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
     digitalWrite(RED_LED, HIGH);
   } else if (msg_p == "LED OFF") {
     digitalWrite(RED_LED, LOW);
-  } else if (msg_p == "ALARM ON") {
+  } else if (msg_p == "on") {
     isAlarmActivated = true;
-  } else if (msg_p == "ALARM OFF") {
+  } else if (msg_p == "off") {
     isAlarmActivated = false;
   }
 
@@ -95,9 +102,9 @@ void reconnect() {
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
       // Once connected, publish an announcement...
-      client.publish(topicOut, "hello world");
+      //0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000client.publish(topicOut, "hello world");
       // ... and resubscribe
-      client.subscribe(topicIn);
+      client.subscribe(TOPIC_ALARM_ACTIVATION);
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -108,8 +115,9 @@ void reconnect() {
   }
 }
 
+
 void publishMessages() {
-  long nowTime = millis();
+  /*long nowTime = millis();
   if (nowTime - lastMessageTime > 2000) {
     lastMessageTime = nowTime;
     ++messageCounter;
@@ -119,21 +127,17 @@ void publishMessages() {
     Serial.print("Publish message: ");
     Serial.println(newMessage);
     client.publish(topicOut, newMessage);
-  }
+  }*/
 }
 
 void setup() {
   Serial.begin(115200);
-  /*while (!Serial) {  // Wait for Serial to be ready
-    delay(500);
-  };*/
+  Serial.println("Serial is starting...");
   delay(2000);
-  Serial.println("Serial is ready.");
 
   tft.begin();
   tft.fillScreen(TFT_BLACK);
   tft.setRotation(3);
-
 
   wifiMulti.addAP(SSID_MOBILE, PASSWORD_MOBILE);
   wifiMulti.addAP(SSID_HOME, PASSWORD_HOME);
@@ -160,11 +164,51 @@ void setup() {
   client.setServer(mqtt_server, 1883);  // Connect the MQTT Server
   client.setCallback(callback);
 
-
   pinMode(RED_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
+
   pinMode(PIR_MOTION_SENSOR, INPUT);
 
   pinMode(WIO_BUZZER, OUTPUT);
+
+
+  Serial.println("Gyroscope example");
+  lis.begin(Wire1);
+  lis.setOutputDataRate(LIS3DHTR_DATARATE_25HZ);
+  lis.setFullScaleRange(LIS3DHTR_RANGE_2G);
+}
+
+
+void angleMonitor() {
+  float x_angle = lis.getAccelerationX() * 180 / PI;
+  float y_angle = lis.getAccelerationY() * 180 / PI;
+  float z_angle = lis.getAccelerationZ() * 180 / PI;
+  long nowTime = millis();
+
+  if (nowTime - lastAngleTime > 300) {
+
+    lastAngleTime = nowTime;
+
+    float new_angles_sum = x_angle + y_angle + z_angle;
+
+    if (angles_sum != 0) {
+      if (abs(angles_sum - new_angles_sum) > 15 || (abs(original_angle - new_angles_sum) > 30)) {
+        angleActivated = true;
+      } else {
+        angleActivated = false;
+      }
+    } else {
+      original_angle = new_angles_sum;
+    }
+    angles_sum = new_angles_sum;
+
+    if (angleActivated) {
+      Serial.println("Angle activated");
+      client.publish(TOPIC_ANGLE, "on");
+    } else {
+      client.publish(TOPIC_ANGLE, "off");
+    }
+  }
 }
 
 void loop() {
@@ -194,20 +238,37 @@ void loop() {
   publishMessages();
 
   if (isAlarmActivated) {
+    digitalWrite(GREEN_LED, HIGH);
+    client.publish(TOPIC_LED_GREEN, "on");
+    client.publish(TOPIC_ALARM_STATUS, "on");
+
     if (digitalRead(PIR_MOTION_SENSOR)) {
       tft.fillScreen(TFT_RED);
       Serial.println("Something is moving!!");
+      client.publish(TOPIC_MOTION, "on");
       analogWrite(WIO_BUZZER, 128);
       digitalWrite(RED_LED, HIGH);
       delay(200);
       analogWrite(WIO_BUZZER, 0);
       digitalWrite(RED_LED, LOW);
-
+      client.publish(TOPIC_LED_RED, "on");
     } else {
       tft.fillScreen(TFT_GREEN);
       Serial.println("Watching...");
+      client.publish(TOPIC_MOTION, "off");
       analogWrite(WIO_BUZZER, 0);
+      client.publish(TOPIC_LED_RED, "off");
     }
+
+    angleMonitor();
     delay(200);
+  } else {
+    digitalWrite(GREEN_LED, LOW);
+    client.publish(TOPIC_LED_GREEN, "off");
+    client.publish(TOPIC_LED_RED, "off");
+    client.publish(TOPIC_MOTION, "off");
+
+    client.publish(TOPIC_ALARM_STATUS, "off");
+    client.publish(TOPIC_ANGLE, "off");
   }
 }

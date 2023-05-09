@@ -21,3 +21,7 @@ web-build/
 
 #Wio env variables header file
 wio/myEnv.h
+
+
+#Active User Account for Expo Application Services (EAS)
+%ProgramData%/Microsoft/Windows/UUS/State/_active.uusver

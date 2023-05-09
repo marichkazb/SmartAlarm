@@ -1,0 +1,66 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+image: node:alpine
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .npm
+
+stages:
+  - test
+  - build
+  - deploy
+
+before_script:
+  - npm ci --cache .npm
+  - apk add --no-cache bash git
+
+eas-build:
+  stage: build
+  tags:
+    - docker
+  script:
+    # Note: there is a limit of 30 EAS builds per month:
+    - echo "npx eas-cli build --platform all --profile preview --non-interactive"
+
+web-build:
+  stage: build
+  tags:
+    - docker
+  script:
+    - npx expo export:web
+  artifacts:
+    paths:
+      - web-build/
+
+unit-test-job:
+  stage: test
+  tags:
+    - docker
+  script:
+    - echo "Running unit tests... It should take 60 seconds."
+    - sleep 60
+    - echo "Code coverage is 90%"
+
+lint-test-job:
+  stage: test
+  tags:
+    - docker
+  script:
+    - echo "Linting code... It should take 10 seconds."
+    - sleep 10
+    - echo "No lint issues found."
+
+web-deploy:
+  stage: deploy
+  tags:
+    - docker
+  environment:
+    name: production
+    url: https://smartalarm.netlify.app/
+  needs: ["web-build"] # not necessary, since deploy stage happens only after build stage
+  script:
+    - npx netlify-cli deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod --dir=web-build/
