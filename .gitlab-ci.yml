@@ -50,9 +50,7 @@ lint-test-job:
   tags:
     - docker
   script:
-    - echo "Linting code... It should take 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+    - npx eslint .
 
 web-deploy:
   stage: deploy
