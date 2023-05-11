@@ -141,6 +141,7 @@ function Home(props) {
                     Open
                 </Button>
             </View>
+            <Button onPress={() => navigation.navigate('TestScreen')} variant="subtle" colorScheme="blue">Test Screen</Button>
             <Box w="100%" alignItems="center" justifyContent="center">
                 <Collapse isOpen={show}>
                     <Alert w="100%" status="success">
