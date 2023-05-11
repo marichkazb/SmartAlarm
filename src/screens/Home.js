@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View, ScrollView} from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import {
     Button,
     HStack,
-    Switch,
+    Switch, // eslint-disable-line no-unused-vars
     Avatar,
     Center,
     Progress,
@@ -13,18 +13,16 @@ import {
     Alert,
     Collapse, Box,
 } from 'native-base';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import Paho from 'paho-mqtt';
 import homeImage from '../assets/HomeBackground.png';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Paho from "paho-mqtt";
 
 function Home(props) {
     const [show, setShow] = React.useState(false);
     const { navigation } = props;
 
-    let client;
-    client = new Paho.Client(
-        "broker.hivemq.com",
+    const client = new Paho.Client(
+        'broker.hivemq.com',
         Number(8000),
         `client-id-${parseInt(Math.random() * 100)}`
     );
@@ -33,25 +31,24 @@ function Home(props) {
     const [message, setMessage] = useState('not connected');
 
     function onMessage(message) {
-        if (message.destinationName === topic)
-            setMessage(message.payloadString);
+        if (message.destinationName === topic) setMessage(message.payloadString);
     }
 
     useEffect(() => {
-        client.connect( {
+        client.connect({
             onSuccess: () => {
-                console.log("Connected!");
+                console.log('Connected!'); // eslint-disable-line no-console
                 client.subscribe(topic);
                 client.onMessageArrived = onMessage;
             },
             onFailure: () => {
-                console.log("Failed to connect!");
+                console.log('Failed to connect!'); // eslint-disable-line no-console
             }
         });
         return () => {
             client.disconnect();
         };
-    }, )
+    },);
 
     function publishTopic(topic, message) {
         const newMessage = new Paho.Message(message);
@@ -61,7 +58,7 @@ function Home(props) {
 
     const turnOn = () => {
         if (!client.isConnected()) {
-            client.connect()
+            client.connect();
         }
         const topic ='wio-command/alarm-activation';
         const message ='on';
@@ -70,7 +67,7 @@ function Home(props) {
 
     const turnOff = () => {
         if (!client.isConnected()) {
-            client.connect()
+            client.connect();
         }
         const topic ='wio-command/alarm-activation';
         const message ='off';
@@ -83,8 +80,8 @@ function Home(props) {
                 <Text style={styles.pageTitle}>Home</Text>
                 <Avatar
                     bg="cyan.500" source={{
-                    uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-                }}>
+                        uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+                    }}>
                     TE
                 </Avatar>
             </View>
@@ -99,7 +96,6 @@ function Home(props) {
                     <MaterialIcons name="security" size={50} color="#2420FF" style={{ paddingBottom: 10 }} />
                     <Text>Current status:</Text>
                     <Text>{message}</Text>
-                    <Text></Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Button style={{ backgroundColor: '#D8E59E', padding: 10, borderRadius: 5, marginRight: 10 }} onPress={() => turnOn()}>
                             <Text style={{ color: '#44601A' }}>Turn on</Text>
@@ -128,7 +124,7 @@ function Home(props) {
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
                     rounded="lg" shaddow="1">
                     <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="motion-sensor" size={55} color="#2420FF" style={{ paddingBottom: 30 }}  />
+                        <MaterialCommunityIcons name="motion-sensor" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
                         <Button onPress={() => navigation.navigate('Sensors')} variant="subtle" colorScheme="blue">Sensors</Button>
                     </HStack>
                 </Center>
@@ -154,9 +150,9 @@ function Home(props) {
                                 </HStack>
                                 <IconButton
                                     variant="top-accent" _focus={{
-                                    borderWidth: 0
-                                }} icon={<CloseIcon size="3" />} _icon={{
-                                    color: 'coolGray.600' }} onPress={() => setShow(false)}
+                                        borderWidth: 0
+                                    }} icon={<CloseIcon size="3" />} _icon={{
+                                        color: 'coolGray.600' }} onPress={() => setShow(false)}
                                 />
                             </HStack>
                         </VStack>
