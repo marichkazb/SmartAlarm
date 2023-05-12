@@ -39,7 +39,6 @@ function App() {
                     component={AdvicePage}
                     options={{ title: 'AdvicePage' }}
                     />
-
                 </Stack.Navigator>
             </NavigationContainer>
         </NativeBaseProvider>
