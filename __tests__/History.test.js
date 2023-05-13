@@ -1,22 +1,16 @@
-import History from '../src/screens/History';
-
-import '@typescript-eslint/parser';
-import 'parse5'
-import 'jest';
-import '@testing-library/react'
-import '@testing-library'
-import '@testing-library/react'
-import '@testing-library/jest-native'
-import '@testing-library/react-native'
-import { shallow } from 'enzyme'
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { History } from '../src/screens/index.js';
 import React from 'react';
+import expect from 'expect';
 
+import '@testing-library/jest-native';
+import '@testing-library/react-native';
+import '@typescript-eslint/parser';
+import { render } from '@testing-library/react-native';
 
-test('renders a container', () => {
-    const wrapper = shallow(React.createElement(History));
-    expect(wrapper.find('View.container')).toHaveLength(1);
-});
-
-
-
+describe("History page", () => {
+        it('History component rendering', () => {
+        const { getByText } = render(<History />);
+        const element = getByText('History');
+        expect(element).toBeDefined();
+        });
+    });

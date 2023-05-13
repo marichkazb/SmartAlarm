@@ -1,7 +1,6 @@
 import 'jest';
 import { sum } from '../sum';
 
-import '@testing-library/react'
 import '@typescript-eslint/parser'
 
 test('sum function working', () => {
