@@ -3,7 +3,7 @@ import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NativeBaseProvider } from 'native-base';
-import { Home, History, Settings, Sensors} from './src/screens/index';
+import { Home, History, Settings, Sensors, Emergency} from './src/screens/index';
 
 
 const Stack = createNativeStackNavigator();
@@ -33,6 +33,11 @@ function App() {
                         name="Sensors"
                         component={Sensors}
                         options={{ title: 'Sensors' }}
+                    />
+                    <Stack.Screen
+                        name="Emergency"
+                        component={Emergency}
+                        options={{ title: 'Emergency' }}
                     />
                 </Stack.Navigator>
             </NavigationContainer>
