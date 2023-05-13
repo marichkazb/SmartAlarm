@@ -136,8 +136,8 @@ function Home(props) {
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
                     rounded="lg" shaddow="1">
                     <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="alert" size={55} color="red" style={{ paddingBottom: 30 }}  />
-                        <Button onPress={() => navigation.navigate('Emergency')} variant="subtle" colorScheme="red">Emergency</Button>
+                        <MaterialCommunityIcons name="alert" size={55} color="#dc143c" style={{ paddingBottom: 30 }}  />
+                        <Button onPress={() => navigation.navigate('Emergency')} variant="subtle" colorScheme="#dc143c">Emergency</Button>
                     </HStack>
                 </Center>
             </ScrollView>
