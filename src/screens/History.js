@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as FileSystem from 'expo-file-system';
 
 const intrusionHistory = [
     {
@@ -18,14 +19,14 @@ const intrusionHistory = [
         resolved: false
     },
     {
-        id: 2,
+        id: 3,
         date: '23.02.2023',
         title: 'Vacation mode activated',
         desc: 'Donec mauris lacus, ultricies ac facilisis in, sagittis sed ante. Pellentesque vel venenatis velit',
         resolved: true
     },
     {
-        id: 2,
+        id: 4,
         date: '07.03.2023',
         title: 'Intrusion through the front door',
         desc: 'Aenean placerat elit ac posuere ullamcorper. Donec sapien velit, efficitur eget egestas vel, sagittis viverra ipsum. Nullam facilisis sagittis ligula, id commodo eros volutpat a. Sed vel sollicitudin neque, ut eleifend risus.',
@@ -36,7 +37,7 @@ const intrusionHistory = [
 const renderItem = item => {
     const resolvedText = item.resolved ? 'Resolved successfully' : 'Not resolved. Please consider this case';
     return (
-        <View style={styles.itemContainer}>
+        <View key={item.id} style={styles.itemContainer}>
             <View style={styles.itemWrapper}>
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.date}>{item.date}</Text>
@@ -50,6 +51,21 @@ const renderItem = item => {
     );
 };
 function History() {
+    const [database, setDatabase] = React.useState([]);
+
+    useEffect(() => {
+        const filePath = `${FileSystem.documentDirectory}/history.json`;
+        FileSystem.getInfoAsync(filePath)
+            .then(({ exists }) => FileSystem.readAsStringAsync(filePath))
+            .then(data => {
+                setDatabase(JSON.parse(data));
+            })
+            .catch(error => {
+                console.log('Error reading database:', error);
+            });
+    }, [setDatabase]);
+
+    console.log(database);
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
