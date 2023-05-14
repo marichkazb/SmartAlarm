@@ -128,6 +128,15 @@ function Home(props) {
                         <Button onPress={() => navigation.navigate('Sensors')} variant="subtle" colorScheme="blue">Sensors</Button>
                     </HStack>
                 </Center>
+                <Center
+                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
+                    rounded="lg" shaddow="1">
+                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
+                        <MaterialCommunityIcons name="alert" size={55} color="#dc143c" style={{ paddingBottom: 30 }}  />
+                        <Button onPress={() => navigation.navigate('Emergency')} variant="subtle" colorScheme="red">Emergency</Button>
+                    </HStack>
+                </Center>
+                
             </ScrollView>
             <View style={styles.alertContainer}>
                 <Text style={styles.text}>Test alert by clicking this button!</Text>
