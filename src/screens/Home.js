@@ -29,9 +29,18 @@ function Home(props) {
     );
 
     const topic = 'sensor-status/alarm';
+    const angleTopic = 'sensor-status/angleSensor';
+    const motionTopic = 'sensor-status/motion';
+
     const [message, setMessage] = useState('not connected');
     function onMessage(message) {
         if (message.destinationName === topic) setMessage(message.payloadString);
+        if (message.destinationName === angleTopic) {
+            setHistoryData(getAngleObject);
+        }
+        if (message.destinationName === motionTopic) {
+            setHistoryData(getMotionObject());
+        }
     }
 
     const date = new Date();
