@@ -10,6 +10,8 @@
 #define PIR_MOTION_SENSOR D0
 #define RED_LED PIN_WIRE_SCL
 #define GREEN_LED D6
+#define BUTTON D4
+
 //WIO_BUZZER (digital internal sensor)
 //ANGLE SENSOR (analog internal sensor)
 
@@ -208,6 +210,8 @@ void setup() {
 
   pinMode(WIO_BUZZER, OUTPUT);
 
+  pinMode(BUTTON, INPUT);
+
   lis.begin(Wire1);
   lis.setOutputDataRate(LIS3DHTR_DATARATE_25HZ);
   lis.setFullScaleRange(LIS3DHTR_RANGE_2G);
@@ -245,6 +249,14 @@ void loop() {
         client.publish(TOPIC_LED_GREEN, "on");
         client.publish(TOPIC_ALARM_STATUS, "on");
 
+        if (BUTTON == HIGH){
+          client.publish(TOPIC_BUTTON, "engaged");
+        }
+        else{
+          digitalWrite(BUTTON, LOW);
+          client.publish(TOPIC_BUTTON, "disengaged");
+        }
+
         if (digitalRead(PIR_MOTION_SENSOR) || angleMonitor() ) {
           tft.fillScreen(TFT_RED);
           Serial.println("Something is moving!!");
@@ -262,10 +274,11 @@ void loop() {
           analogWrite(WIO_BUZZER, 0);
           client.publish(TOPIC_LED_RED, "off");
         }
-
         delay(200);
       } else {
         digitalWrite(GREEN_LED, LOW);
+        digitalWrite(BUTTON, LOW);
+        client.publish(TOPIC_BUTTON, "disengaged");
         client.publish(TOPIC_LED_GREEN, "off");
         client.publish(TOPIC_LED_RED, "off");
         client.publish(TOPIC_MOTION, "off");
