@@ -5,12 +5,7 @@ import {
     HStack,
     Avatar,
     Center,
-    Progress,
-    IconButton,
-    CloseIcon,
-    VStack,
-    Alert,
-    Collapse, Box,
+    Progress
 } from 'native-base';
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Paho from 'paho-mqtt';
@@ -19,7 +14,6 @@ import homeImage from '../assets/HomeBackground.png';
 import { HISTORY_DB } from '../constants';
 
 function Home(props) {
-    const [show, setShow] = React.useState(false);
     const { navigation } = props;
 
     const client = new Paho.Client(
@@ -176,36 +170,6 @@ function Home(props) {
                 colorScheme="blue">
                 Add history item
             </Button>
-            <View style={styles.alertContainer}>
-                <Text style={styles.text}>Test alert by clicking this button!</Text>
-                <Button
-                    size="sm" onPress={() => setShow(true)} mt={8} mx="auto" style={{ top: -15 }}
-                    colorScheme="blue">
-                    Open
-                </Button>
-            </View>
-            <Box w="100%" alignItems="center" justifyContent="center">
-                <Collapse isOpen={show}>
-                    <Alert w="100%" status="success">
-                        <VStack space={2} flexShrink={1} w="100%" alignItems="center">
-                            <HStack flexShrink={1} space={2} justifyContent="space-between" alignItems="center">
-                                <HStack space={3} flexShrink={1}>
-                                    <Alert.Icon mt="1" status="success" style={{ bottom: 5 }} />
-                                    <Text fontSize="md" color="coolGray.800">
-                                        Congrats, you opened alert!
-                                    </Text>
-                                </HStack>
-                                <IconButton
-                                    variant="top-accent" _focus={{
-                                        borderWidth: 0
-                                    }} icon={<CloseIcon size="3" />} _icon={{
-                                        color: 'coolGray.600' }} onPress={() => setShow(false)}
-                                />
-                            </HStack>
-                        </VStack>
-                    </Alert>
-                </Collapse>
-            </Box>
             <Text style={styles.text}>Your progress in completing your profile: </Text>
             <Progress value={85} mx="4" colorScheme="blue" size="md" />
         </ScrollView>
@@ -245,11 +209,5 @@ const styles = StyleSheet.create({
         position: 'relative',
         left: 10,
         right: 10
-    },
-    alertContainer: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        flex: 1,
-        alignItems: 'center'
     }
 });
