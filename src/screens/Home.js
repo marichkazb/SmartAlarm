@@ -27,6 +27,7 @@ function Home(props) {
     const motionTopic = 'sensor-status/motion';
 
     const [message, setMessage] = useState('not connected');
+
     function onMessage(message) {
         if (message.destinationName === topic) setMessage(message.payloadString);
         if (message.destinationName === angleTopic) {
@@ -131,7 +132,6 @@ function Home(props) {
                     <MaterialIcons name="security" size={50} color="#2420FF" style={{ paddingBottom: 10 }} />
                     <Text>Current status:</Text>
                     <Text>{message}</Text>
-                    <Text />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Button style={{ backgroundColor: '#D8E59E', padding: 10, borderRadius: 5, marginRight: 10 }} onPress={() => turnOn()}>
                             <Text style={{ color: '#44601A' }}>Turn on</Text>
@@ -162,6 +162,14 @@ function Home(props) {
                     <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
                         <MaterialCommunityIcons name="motion-sensor" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
                         <Button onPress={() => navigation.navigate('Sensors')} variant="subtle" colorScheme="blue">Sensors</Button>
+                    </HStack>
+                </Center>
+                <Center
+                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
+                    rounded="lg" shaddow="1">
+                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
+                        <MaterialCommunityIcons name="alert" size={55} color="#dc143c" style={{ paddingBottom: 30 }}  />
+                        <Button onPress={() => navigation.navigate('Emergency')} variant="subtle" colorScheme="red">Emergency</Button>
                     </HStack>
                 </Center>
             </ScrollView>
