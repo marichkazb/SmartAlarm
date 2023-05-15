@@ -41,7 +41,7 @@ function History() {
             if (index !== -1) {
                 database[index].resolved = true;
             }
-            await AsyncStorage.setItem(HISTORY_DB, JSON.stringify(database));
+            await AsyncStorage.setItem(HISTORY_DB, JSON.stringify(database.reverse()));
             await getHistoryData();
         } catch (error) {
             console.log(error);
@@ -53,7 +53,7 @@ function History() {
             const jsonValue = await AsyncStorage.getItem(HISTORY_DB);
             if (jsonValue !== null) {
                 parsedData = JSON.parse(jsonValue);
-                setDatabase(parsedData);
+                setDatabase(parsedData.reverse());
             } else {
                 console.log('No data found.');
             }
