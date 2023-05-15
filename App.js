@@ -10,39 +10,46 @@ import { HISTORY_DB } from './src/constants';
 
 const Stack = createNativeStackNavigator();
 
-const date = new Date();
 function formatToLocalString(date) {
-    return date.toLocaleDateString('en-ca');
+    return date.toString().slice(4, 15);
+}
+
+function formatTime(time) {
+    return time.toLocaleTimeString('en-ca', { hour12: false });
 }
 
 const intrusionHistory = [
     {
         id: Math.random() * 10000,
         date: formatToLocalString(new Date(Date.UTC(2023, 4, 11))),
-        time: date.toTimeString(),
+        time: formatTime(new Date(Date.UTC(2023, 4, 11, 8, 9, 6))),
         title: 'Security Alarm Triggered',
         desc: 'Unauthorized attempt to tamper with the security alarm system was detected',
+        resolved: false
     },
     {
         id: Math.random() * 10000,
         date: formatToLocalString(new Date(Date.UTC(2023, 4, 12))),
-        time: date.toTimeString(),
-        title: 'Security Alarm Triggered',
-        desc: 'Unauthorized attempt to tamper with the security alarm system was detected',
+        time: formatTime(new Date(Date.UTC(2023, 4, 11, 12, 4, 36))),
+        title: 'Low Battery Alert',
+        desc: 'Low battery detected in the security system. Replace battery."',
+        resolved: true
     },
     {
         id: Math.random() * 10000,
         date: formatToLocalString(new Date(Date.UTC(2023, 4, 13))),
-        time: date.toTimeString(),
-        title: 'Security Alarm Triggered',
-        desc: 'Unauthorized attempt to tamper with the security alarm system was detected',
+        time: formatTime(new Date(Date.UTC(2023, 4, 11, 14, 32, 56))),
+        title: 'System Disarmed',
+        desc: 'Security system has been disarmed. Verify the authorized user.',
+        resolved: false
     },
     {
         id: Math.random() * 10000,
         date: formatToLocalString(new Date(Date.UTC(2023, 4, 14))),
-        time: date.toTimeString(),
-        title: 'Security Alarm Triggered',
-        desc: 'Unauthorized attempt to tamper with the security alarm system was detected',
+        time: formatTime(new Date(Date.UTC(2023, 4, 11, 11, 45, 18))),
+        title: 'Alarm System Test',
+        desc: 'This is a scheduled test of the alarm system. No action required.',
+        resolved: false
     }
 ];
 const initializeDatabase = async () => {

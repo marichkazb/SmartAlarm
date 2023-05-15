@@ -2,34 +2,58 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import { Button } from 'native-base';
 import { HISTORY_DB } from '../constants';
 
-const renderItem = item => {
-    const resolvedText = item.resolved ? 'Resolved successfully' : 'Not resolved. Please consider this case';
-    return (
-        <View key={item.id} style={styles.itemContainer}>
-            <View style={styles.itemWrapper}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.date}>{item.date}</Text>
-            </View>
-            <Text style={styles.desc}>{item.desc}</Text>
-            <View style={styles.statusContainer}>
-                {item.resolved ? <Ionicons name="md-checkmark-circle" size={18} color="green" /> : <Ionicons name="construct-outline" size={18} color="red" />}
-                <Text style={[styles.status, item.resolved ? styles.resolved : styles.notResolved]}>{resolvedText}</Text>
-            </View>
-        </View>
-    );
-};
 function History() {
     const [database, setDatabase] = React.useState([]);
 
+    const renderItem = item => {
+        const resolvedText = item.resolved ? 'Resolved successfully' : 'Not seen yet. Press OK to acknowledge';
+        return (
+            <View key={item.id} style={styles.itemContainer}>
+                <View style={styles.itemWrapper}>
+                    <Text style={styles.title}>{item.title}</Text>
+                    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end' }}>
+                        <Text style={styles.dateTime}>{item.date}</Text>
+                        <Text style={styles.dateTime}>{item.time}</Text>
+                    </View>
+                </View>
+                <Text style={styles.desc}>{item.desc}</Text>
+                <View style={styles.statusContainer}>
+                    <View style={{ flex: 1, flexDirection: 'row', maxWidth: '80%', alignItems: 'center', justifyContent: 'flex-start' }}>
+                        {item.resolved ? <Ionicons name="md-checkmark-circle" size={18} color="green" /> : <Ionicons name="construct-outline" size={18} color="red" />}
+                        <Text style={[styles.status, item.resolved ? styles.resolved : styles.notResolved]}>{resolvedText}</Text>
+                    </View>
+                    <Button
+                        size="sm" onPress={() => {
+                            resolveItem(item); }
+                        } colorScheme="blue">
+                        OK
+                    </Button>
+                </View>
+            </View>
+        );
+    };
+    const resolveItem = async item => {
+        try {
+            const index = database.findIndex(obj => obj.id === item.id);
+            if (index !== -1) {
+                database[index].resolved = true;
+            }
+            await AsyncStorage.setItem(HISTORY_DB, JSON.stringify(database));
+            await getHistoryData();
+        } catch (error) {
+            console.log(error);
+        }
+    };
     let parsedData;
     const getHistoryData = async () => {
         try {
             const jsonValue = await AsyncStorage.getItem(HISTORY_DB);
             if (jsonValue !== null) {
                 parsedData = JSON.parse(jsonValue);
-                setDatabase(parsedData.reverse());
+                setDatabase(parsedData);
             } else {
                 console.log('No data found.');
             }
@@ -73,9 +97,9 @@ const styles = StyleSheet.create({
         fontWeight: '300',
     },
     title: {
-        fontSize: 30,
+        fontSize: 27,
         fontWeight: '400',
-        maxWidth: '70%'
+        maxWidth: '65%'
     },
     desc: {
         paddingLeft: 2,
@@ -83,8 +107,8 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: '200'
     },
-    date: {
-        fontSize: 20,
+    dateTime: {
+        fontSize: 16,
         color: '#797979'
     },
     itemWrapper: {
@@ -94,6 +118,7 @@ const styles = StyleSheet.create({
     },
     status: {
         paddingLeft: 3,
+        flexWrap: 'wrap'
     },
     resolved: {
         color: '#06891b'
@@ -117,7 +142,9 @@ const styles = StyleSheet.create({
         padding: 10
     },
     statusContainer: {
-        flexDirection: 'row', alignItems: 'center', paddingTop: 10
+        flexDirection: 'row',
+        paddingTop: 10,
+        justifyContent: 'space-between'
     },
     contentContainer: {
         paddingVertical: 10, marginHorizontal: 10

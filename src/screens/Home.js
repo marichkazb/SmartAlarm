@@ -30,28 +30,31 @@ function Home(props) {
     function onMessage(message) {
         if (message.destinationName === topic) setMessage(message.payloadString);
         if (message.destinationName === angleTopic) {
-            setHistoryData(getAngleObject);
+            setHistoryData(getAngleObject(new Date()));
         }
         if (message.destinationName === motionTopic) {
-            setHistoryData(getMotionObject());
+            setHistoryData(getMotionObject(new Date()));
         }
     }
 
-    const date = new Date();
-    const getAngleObject = () => ({
+    const formatTime = date => date.toTimeString().slice(0, 8);
+
+    const getAngleObject = date => ({
         id: Math.random() * 10000,
-        date: date.toLocaleDateString('en-ca'),
-        time: date.toTimeString(),
+        date: date.toString().slice(4, 15),
+        time: formatTime(date),
         title: 'Security Alarm Triggered',
         desc: 'Unauthorized attempt to tamper with the security alarm system was detected',
+        resolved: false
     });
 
-    const getMotionObject = () => ({
+    const getMotionObject = date => ({
         id: Math.random() * 10000,
-        date: date.toLocaleDateString('en-ca'),
-        time: date.toTimeString(),
+        date: date.toString().slice(4, 15),
+        time: formatTime(date),
         title: 'Motion detected',
         desc: 'Security alarm detected motion within the secured area',
+        resolved: false
     });
 
     const setHistoryData = async jsonData => {
@@ -164,7 +167,7 @@ function Home(props) {
             </ScrollView>
             <Button
                 size="sm" onPress={() => {
-                    setHistoryData(getAngleObject());
+                    setHistoryData(getAngleObject(new Date()));
                 }
                 } mt={8} mx="auto" style={{ top: -15 }}
                 colorScheme="blue">
