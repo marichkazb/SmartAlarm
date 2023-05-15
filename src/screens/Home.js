@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView} from 'react-native';
 import {
     Button,
     HStack,
+    Switch,
     Avatar,
     Center,
     Progress,
@@ -12,17 +13,18 @@ import {
     Alert,
     Collapse, Box,
 } from 'native-base';
-import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import Paho from 'paho-mqtt';
-import * as FileSystem from 'expo-file-system';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import homeImage from '../assets/HomeBackground.png';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Paho from "paho-mqtt";
 
 function Home(props) {
     const [show, setShow] = React.useState(false);
     const { navigation } = props;
 
-    const client = new Paho.Client(
-        'broker.hivemq.com',
+    let client;
+    client = new Paho.Client(
+        "broker.hivemq.com",
         Number(8000),
         `client-id-${parseInt(Math.random() * 100)}`
     );
@@ -32,42 +34,24 @@ function Home(props) {
 
     function onMessage(message) {
         if (message.destinationName === topic)
-        { setMessage(message.payloadString); }
+            setMessage(message.payloadString);
     }
 
-    const writeFile = async (filePath, jsonData) => {
-        FileSystem.readAsStringAsync(filePath)
-            .then(data => {
-                const existingDatabase = JSON.parse(data);
-                const updatedDatabase = [...existingDatabase, jsonData];
-                return JSON.stringify(updatedDatabase);
-            })
-            .then(updatedData => {
-                return FileSystem.writeAsStringAsync(filePath, updatedData);
-            })
-            .then(() => {
-                console.log('Database updated successfully.');
-            })
-            .catch(error => {
-                console.log('Error updating database:', error);
-            });
-    };
-
     useEffect(() => {
-        client.connect({
+        client.connect( {
             onSuccess: () => {
-                console.log('Connected!');
+                console.log("Connected!");
                 client.subscribe(topic);
                 client.onMessageArrived = onMessage;
             },
             onFailure: () => {
-                console.log('Failed to connect!');
+                console.log("Failed to connect!");
             }
         });
         return () => {
             client.disconnect();
         };
-    },);
+    }, )
 
     function publishTopic(topic, message) {
         const newMessage = new Paho.Message(message);
@@ -77,7 +61,7 @@ function Home(props) {
 
     const turnOn = () => {
         if (!client.isConnected()) {
-            client.connect();
+            client.connect()
         }
         const topic ='wio-command/alarm-activation';
         const message ='on';
@@ -86,7 +70,7 @@ function Home(props) {
 
     const turnOff = () => {
         if (!client.isConnected()) {
-            client.connect();
+            client.connect()
         }
         const topic ='wio-command/alarm-activation';
         const message ='off';
@@ -99,8 +83,8 @@ function Home(props) {
                 <Text style={styles.pageTitle}>Home</Text>
                 <Avatar
                     bg="cyan.500" source={{
-                        uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-                    }}>
+                    uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+                }}>
                     TE
                 </Avatar>
             </View>
@@ -149,22 +133,6 @@ function Home(props) {
                     </HStack>
                 </Center>
             </ScrollView>
-            <Button
-                size="sm" onPress={() => {
-                    const filePath = `${FileSystem.documentDirectory}/history.json`;
-                    const jsonData = {
-                        id: 1,
-                        date: '12.01.2023',
-                        title: 'Movement detected',
-                        desc: 'Sensors detected the movement in the back yard',
-                        resolved: true
-                    };
-                    writeFile(filePath, jsonData);
-                }
-                } mt={8} mx="auto" style={{ top: -15 }}
-                colorScheme="blue">
-                Write to file
-            </Button>
             <View style={styles.alertContainer}>
                 <Text style={styles.text}>Test alert by clicking this button!</Text>
                 <Button
@@ -186,9 +154,9 @@ function Home(props) {
                                 </HStack>
                                 <IconButton
                                     variant="top-accent" _focus={{
-                                        borderWidth: 0
-                                    }} icon={<CloseIcon size="3" />} _icon={{
-                                        color: 'coolGray.600' }} onPress={() => setShow(false)}
+                                    borderWidth: 0
+                                }} icon={<CloseIcon size="3" />} _icon={{
+                                    color: 'coolGray.600' }} onPress={() => setShow(false)}
                                 />
                             </HStack>
                         </VStack>
