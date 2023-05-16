@@ -10,6 +10,7 @@
 #define PIR_MOTION_SENSOR D0
 #define RED_LED PIN_WIRE_SCL
 #define GREEN_LED D6
+#define BUTTON D4
 //WIO_BUZZER (digital internal sensor)
 //ANGLE SENSOR (analog internal sensor)
 
@@ -35,6 +36,7 @@ float original_angle = 0;
 boolean angleActivated = false;
 long angleChangedTime = 0;
 boolean angleResponse = false;
+int buttonState = 0; 
 
 void callback(char* topic, byte* payload, unsigned int length) {
 
@@ -208,6 +210,8 @@ void setup() {
 
   pinMode(WIO_BUZZER, OUTPUT);
 
+  pinMode(BUTTON, INPUT);
+
   lis.begin(Wire1);
   lis.setOutputDataRate(LIS3DHTR_DATARATE_25HZ);
   lis.setFullScaleRange(LIS3DHTR_RANGE_2G);
@@ -244,6 +248,14 @@ void loop() {
         digitalWrite(GREEN_LED, HIGH);
         client.publish(TOPIC_LED_GREEN, "on");
         client.publish(TOPIC_ALARM_STATUS, "on");
+
+        buttonState = digitalRead(BUTTON);
+        if (buttonState == HIGH) {
+        client.publish(TOPIC_BUTTON, "on");
+    }
+    else {
+        client.publish(TOPIC_BUTTON, "on");
+    }
 
         if (digitalRead(PIR_MOTION_SENSOR) || angleMonitor() ) {
           tft.fillScreen(TFT_RED);
