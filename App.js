@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NativeBaseProvider } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Home, History, Settings, Sensors, Emergency } from './src/screens/index';
+import { Home, History, Settings, Sensors, Emergency, AdvicePage } from './src/screens/index';
 import { HISTORY_DB } from './src/constants';
 
 
@@ -83,6 +83,11 @@ function App() {
                         name="Sensors"
                         component={Sensors}
                         options={{ title: 'Sensors' }}
+                    />
+                    <Stack.Screen
+                    name="AdvicePage"
+                    component={AdvicePage}
+                    options={{ title: 'AdvicePage' }}
                     />
                     <Stack.Screen
                         name="Emergency"
