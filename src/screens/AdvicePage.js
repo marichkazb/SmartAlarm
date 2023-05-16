@@ -1,10 +1,15 @@
 import React from 'react';
-import {StyleSheet, Text, View, ScrollView, Image, FlatList} from 'react-native';
+import {StyleSheet, Text, View, Button, ScrollView, Image, FlatList} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Video } from 'expo-av';
+import { StatusBar } from 'expo-status-bar';
+
+
 
 function AdvicePage(){
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
  return (
-
        <View style={styles.container}>
              <View style={{ alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row' }}>
                  <Text style={styles.pageTitle}>Advice</Text>
@@ -56,11 +61,20 @@ function AdvicePage(){
                         <Text style={styles.itemText}>Evaluation of risks to keep house secure</Text>
                 </View>
               </View>
-
-              
+              <View style={styles.container}>
+                <Video
+                ref={video}
+                style={styles.video}
+                source={{uri:'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'}}
+                useNativeControls
+                resizeMode = "contain"
+                isLooping
+                onPlaybackStatusUpdate = {setStatus}
+                />
                 
+                <StatusBar style ="auto"/>
+              </View>
                 </View>
-
              </ScrollView>
       </View>
 
@@ -83,6 +97,9 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingVertical: 10, marginHorizontal: 10
   },
+  buttons: {
+    margin: 16,
+  },
   pageDesc: { color: '#797979',
         fontSize: 25,
         fontWeight: '300',
@@ -91,6 +108,10 @@ const styles = StyleSheet.create({
       fontSize:20,
       fontWeight: 'bold',
       marginTop: 10, 
+    },
+    video: {
+      width:400,
+      height: 200
     },
     itemWrapper:{
       flexDirection: 'row',
