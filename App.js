@@ -17,7 +17,7 @@ function App() {
                     <Stack.Screen
                         name="LockScreen"
                         component={LockScreen}
-                        options={{ title: 'LockScreen' }}
+                        options={{ title: 'Enter Password' }}
                     />
                     <Stack.Screen
                         name="History"
@@ -42,7 +42,7 @@ function App() {
                     <Stack.Screen
                         name="NewPassword"
                         component={NewPassword}
-                        options={{ title: 'NewPassword' }}
+                        options={{ title: 'New Password' }}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

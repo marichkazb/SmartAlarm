@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { state } from './NewPassword.js';
+import { passVisibility } from '../lib/passVisibility';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LockScreen = ({ navigation }) => {
   const [password, setPassword] = useState();
   const [error, setError] = useState('');
-
-//   const navigation = useNavigation();
-//   const { userPass, setUserPass } = route.params.userPass;
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+    passVisibility();
 
   const handleUnlock = () => {
     if (password === state.userPass) {
@@ -21,16 +22,19 @@ const LockScreen = ({ navigation }) => {
   return (
     <View>
       <TextInput
-        secureTextEntry
+        secureTextEntry={passwordVisibility}
         style={styles.input}
-        inputMode='numeric'
+        inputMode='text'
         placeholder="Enter password"
         value={password}
         onChangeText={setPassword}
       />
-      {error ? <Text>{error}</Text> : null}
-      <TouchableOpacity onPress={handleUnlock}>
-        <Text>Unlock</Text>
+      <Pressable onPress={handlePasswordVisibility} style={{paddingLeft: 330}}>
+        <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+      </Pressable>
+      {error ? <Text style={{padding: 13}}>{error}</Text> : null}
+      <TouchableOpacity onPress={handleUnlock} style={{padding: 15, marginLeft: 145, marginRight: 50}}>
+        <Text style={{fontWeight: 5000, fontSize: 20}}>Unlock</Text>
       </TouchableOpacity>
     </View>
   );

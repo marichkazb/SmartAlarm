@@ -108,8 +108,8 @@ function Home(props) {
                             <Text style={{ color: '#E15551' }}>Turn off</Text>
                         </Button>
                     </View>
-
                 </Center>
+                
                 <Center
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
                     rounded="lg" shaddow="1">
