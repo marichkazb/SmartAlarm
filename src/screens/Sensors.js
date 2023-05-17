@@ -45,7 +45,7 @@ function Sensors() {
     useEffect(() => {
         client.connect({
             onSuccess: () => {
-                console.log('Connected!'); // eslint-disable-line no-console
+                console.log('Connected!');
                 client.subscribe(topic1);
                 client.subscribe(topic2);
                 client.subscribe(topic3);
@@ -55,7 +55,7 @@ function Sensors() {
                 client.onMessageArrived = onMessage;
             },
             onFailure: () => {
-                console.log('Failed to connect!'); // eslint-disable-line no-console
+                console.log('Failed to connect!');
             }
         });
         return () => {
