@@ -4,8 +4,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
 
-
-
 function AdvicePage(){
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
@@ -61,11 +59,14 @@ function AdvicePage(){
                         <Text style={styles.itemText}>Evaluation of risks to keep house secure</Text>
                 </View>
               </View>
+              <View style = {styles.adviceSection}>
+                  <Text style = {styles.sectionTitle}>A video guide to keep your home safe</Text>
+               </View>
               <View style={styles.container}>
                 <Video
                 ref={video}
                 style={styles.video}
-                source={{uri:'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'}}
+                source={{uri:'https://rr1---sn-o097znzk.googlevideo.com/videoplayback?expire=1684338553&ei=GaNkZMvwMoaHkgahqbXoBA&ip=143.244.49.9&id=o-AKXf1AZjvQaYKHAysZ6bQ6MnlbJUZAkHzF-u-8ipRTXR&itag=22&source=youtube&requiressl=yes&mh=cu&mm=31%2C29&mn=sn-o097znzk%2Csn-n4v7snly&ms=au%2Crdu&mv=m&mvi=1&pl=24&initcwndbps=2462500&vprv=1&svpuc=1&mime=video%2Fmp4&ns=rXlOzM9-YYb6CyG9hPJwalIN&cnr=14&ratebypass=yes&dur=33.854&lmt=1519629099674195&mt=1684316470&fvip=1&fexp=24007246%2C51000012&c=WEB&n=m8q0OAHUDuue3w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Csvpuc%2Cmime%2Cns%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AOq0QJ8wRgIhAOtT-G66QobEVyQm-9IQ0iT5S6JDIye60pySNFdnPCzXAiEAsZsq4GNZJ2lbD6PZopm4-TNigZ0UClPmDaC9aXgdXfc%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgQZ5qZ_ijvXpCA2B-M9VXuM-HBzD9lI3jxGGYbFOJtTYCIGXFp7pJyrhD_FprVsdlvIIdV0JIasleMWAtgP-5qdpv&title=Top+7+Tips+on+Keeping+your+Home+Safe'}}
                 useNativeControls
                 resizeMode = "contain"
                 isLooping
