@@ -25,7 +25,7 @@ eas-build:
     - docker
   script:
     # Note: there is a limit of 30 EAS builds per month:
-    - echo "npx eas-cli build --platform all --profile preview --non-interactive"
+    - npx eas-cli build --platform all --profile preview --non-interactive
 
 web-build:
   stage: build
@@ -42,9 +42,8 @@ unit-test-job:
   tags:
     - docker
   script:
-    - echo "Running unit tests... It should take 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    - npm run test
+  allow_failure: true
 
 lint-test-job:
   stage: test
