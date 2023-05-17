@@ -168,7 +168,7 @@ function Home(props) {
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
                     rounded="lg" shaddow="1">
                     <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="alert" size={55} color="#dc143c" style={{ paddingBottom: 30 }}  />
+                        <MaterialCommunityIcons name="alert" size={55} color="#dc143c" style={{ paddingBottom: 30 }} />
                         <Button onPress={() => navigation.navigate('Emergency')} variant="subtle" colorScheme="red">Emergency</Button>
                     </HStack>
                 </Center>
@@ -176,8 +176,8 @@ function Home(props) {
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
                     rounded="lg" shaddow="1">
                     <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="information-outline" size={55} color="#2420FF" style={{ paddingBottom: 30 }}  />
-                            <Button onPress={() => navigation.navigate('AdvicePage')} variant="subtle" colorScheme="blue">Advice</Button>
+                        <MaterialCommunityIcons name="information-outline" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
+                        <Button onPress={() => navigation.navigate('AdvicePage')} variant="subtle" colorScheme="blue">Advice</Button>
                     </HStack>
                 </Center>
             </ScrollView>
