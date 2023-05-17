@@ -85,9 +85,9 @@ function App() {
                         options={{ title: 'Sensors' }}
                     />
                     <Stack.Screen
-                    name="AdvicePage"
-                    component={AdvicePage}
-                    options={{ title: 'AdvicePage' }}
+                        name="AdvicePage"
+                        component={AdvicePage}
+                        options={{ title: 'AdvicePage' }}
                     />
                     <Stack.Screen
                         name="Emergency"

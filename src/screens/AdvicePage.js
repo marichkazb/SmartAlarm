@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button, ScrollView, Image, FlatList} from 'react-native';
+//eslint-disable-next-line no-unused-vars
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
@@ -37,21 +38,17 @@ function AdvicePage(){
                     <MaterialCommunityIcons name="cctv" size={24} color="black" />
                         <Text style={styles.itemText}>Security cameras installed and running</Text>              
                     </View>
-                </View>
 
-              <View style={styles.itemContainer}>
-                <View style={styles.itemWrapper}>
-                  <MaterialCommunityIcons name="shield-lock" size={24} color="blue" />
-                        <Text style={styles.itemText}>Alarm system installed and armed</Text>
-                </View>
-              </View>
+                    <View style={styles.adviceSection}>
+                        <Text style={styles.sectionTitle}>Follow the &quot;S-A-F-E&quot; rules</Text>
+                    </View>
 
-              <View style={styles.itemContainer}>
-                <View style={styles.itemWrapper}>
-                  <MaterialCommunityIcons name="home-lock" size={24} color="green" />
-                        <Text style={styles.itemText}>Fortification of entryways in the house</Text>
-                </View>
-              </View>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.itemWrapper}>
+                            <MaterialCommunityIcons name="cctv" size={24} color="black" />
+                            <Text style={styles.itemText}>Security cameras installed and running</Text>
+                        </View>
+                    </View>
 
               <View style={styles.itemContainer}>
                 <View style={styles.itemWrapper}>
@@ -79,7 +76,7 @@ function AdvicePage(){
              </ScrollView>
       </View>
 
- );
+    );
 }
 
 export default AdvicePage;
@@ -106,9 +103,9 @@ const styles = StyleSheet.create({
         fontWeight: '300',
     },
     sectionTitle: {
-      fontSize:20,
-      fontWeight: 'bold',
-      marginTop: 10, 
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 10,
     },
     video: {
       width:400,
@@ -120,37 +117,37 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
     itemText: {
-      marginLeft: 10,
+        marginLeft: 10,
     },
-  itemContainer: {
-    paddingTop: 10,
-    backgroundColor: '#7CC6FE',
-    shadowRadius: 3,
-    shadowOpacity: '10%',
-    shadowOffset: { width: 0, height: 4 },
-    shadowColor: '#d8d8d8',
-    elevation: 2,
-    borderRadius: 20,
-    padding: 10,
-    marginTop: 5,
-    marginBottom: 5
-},
-image: {
-  width: 400,
-  height: 200,
-  alignSelf: 'center',
-},
-textContainer: {
-    paddingTop: 10,
-    backgroundColor: '#ffffff',
-    shadowRadius: 3,
-    shadowOpacity: '10%',
-    shadowOffset: { width: 0, height: 4 },
-    shadowColor: '#d8d8d8',
-    elevation: 2,
-    borderRadius: 20,
-    padding: 10,
-    marginTop: 5,
-    marginBottom: 5
-},
+    itemContainer: {
+        paddingTop: 10,
+        backgroundColor: '#7CC6FE',
+        shadowRadius: 3,
+        shadowOpacity: '10%',
+        shadowOffset: { width: 0, height: 4 },
+        shadowColor: '#d8d8d8',
+        elevation: 2,
+        borderRadius: 20,
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 5
+    },
+    image: {
+        width: 400,
+        height: 200,
+        alignSelf: 'center',
+    },
+    /*textContainer: {
+        paddingTop: 10,
+        backgroundColor: '#ffffff',
+        shadowRadius: 3,
+        shadowOpacity: '10%',
+        shadowOffset: { width: 0, height: 4 },
+        shadowColor: '#d8d8d8',
+        elevation: 2,
+        borderRadius: 20,
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 5
+    },*/
 });
