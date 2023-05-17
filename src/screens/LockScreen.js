@@ -11,7 +11,6 @@ const LockScreen = ({ navigation }) => {
 //   const { userPass, setUserPass } = route.params.userPass;
 
   const handleUnlock = () => {
-    console.log('here1234',state.userPass)
     if (password === state.userPass) {
       navigation.navigate('Home');
     } else {
@@ -23,6 +22,7 @@ const LockScreen = ({ navigation }) => {
     <View>
       <TextInput
         secureTextEntry
+        style={styles.input}
         inputMode='numeric'
         placeholder="Enter password"
         value={password}
@@ -39,6 +39,12 @@ const LockScreen = ({ navigation }) => {
 export default LockScreen;
 
 const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
   container: {
       flex: 1,
       backgroundColor: '#fff',
