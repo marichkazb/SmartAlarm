@@ -120,18 +120,16 @@ function Home(props) {
         publishTopic(topic, message);
     };
 
-    const renderCard = (navigationRoute, icon, title) => {
-        return (
-            <Center
-                p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                rounded="lg" shaddow="1">
-                <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                    <MaterialCommunityIcons name={icon} size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                    <Button onPress={() => navigation.navigate(navigationRoute)} variant="subtle" colorScheme="blue">{title}</Button>
-                </HStack>
-            </Center>
-        );
-    };
+    const renderCard = (navigationRoute, icon, title) => (
+        <Center
+            p="5" m="2" borderRadius="md" bg="white" shadow="3"
+            rounded="lg" shaddow="1">
+            <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
+                <MaterialCommunityIcons name={icon} size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
+                <Button onPress={() => navigation.navigate(navigationRoute)} variant="subtle" colorScheme="blue">{title}</Button>
+            </HStack>
+        </Center>
+    );
 
     return (
         <ScrollView style={styles.container}>
@@ -167,7 +165,7 @@ function Home(props) {
                         </Button>
                     </View>
                 </Center>
-                
+
                 {renderCard('Sensors', 'motion-sensor', 'Sensors')}
             </ScrollView>
             <Text style={[styles.pageTitle, styles.moreTitle]}>Find out more:</Text>
