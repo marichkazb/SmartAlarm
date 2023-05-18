@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
-import { StatusBar } from 'expo-status-bar';
 
 function AdvicePage() {
     const video = React.useRef(null);
@@ -29,7 +28,7 @@ function AdvicePage() {
                     </View>
 
                     <View style={styles.adviceSection}>
-                        <Text style={styles.sectionTitle}>FOLLOW "S-A-F-E" RULES</Text>
+                        <Text style={styles.sectionTitle}>FOLLOW THE S-A-F-E RULES</Text>
                     </View>
 
                     <View style={styles.itemContainer}>
@@ -66,10 +65,11 @@ function AdvicePage() {
                         <Video
                             ref={video}
                             style={styles.video}
-                            source={{ uri: 'https://rr1---sn-o097znzk.googlevideo.com/videoplayback?expire=1684338553&ei=GaNkZMvwMoaHkgahqbXoBA&ip=143.244.49.9&id=o-AKXf1AZjvQaYKHAysZ6bQ6MnlbJUZAkHzF-u-8ipRTXR&itag=22&source=youtube&requiressl=yes&mh=cu&mm=31%2C29&mn=sn-o097znzk%2Csn-n4v7snly&ms=au%2Crdu&mv=m&mvi=1&pl=24&initcwndbps=2462500&vprv=1&svpuc=1&mime=video%2Fmp4&ns=rXlOzM9-YYb6CyG9hPJwalIN&cnr=14&ratebypass=yes&dur=33.854&lmt=1519629099674195&mt=1684316470&fvip=1&fexp=24007246%2C51000012&c=WEB&n=m8q0OAHUDuue3w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Csvpuc%2Cmime%2Cns%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AOq0QJ8wRgIhAOtT-G66QobEVyQm-9IQ0iT5S6JDIye60pySNFdnPCzXAiEAsZsq4GNZJ2lbD6PZopm4-TNigZ0UClPmDaC9aXgdXfc%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgQZ5qZ_ijvXpCA2B-M9VXuM-HBzD9lI3jxGGYbFOJtTYCIGXFp7pJyrhD_FprVsdlvIIdV0JIasleMWAtgP-5qdpv&title=Top+7+Tips+on+Keeping+your+Home+Safe' }}
+                            source={{ uri: 'https://rr1---sn-ovgq0oxu-j2ie.googlevideo.com/videoplayback?expire=1684439828&ei=tC5mZKuaA8yXv_IP97KoyAw&ip=2001%3A6b0%3A4f%3A2801%3A489e%3Ad7c8%3Aea13%3Af298&id=o-AIijJRvWSQpbe42lGhxksdfp5tuli7fjq5sIkyq0cehU&itag=22&source=youtube&requiressl=yes&mh=CG&mm=31%2C29&mn=sn-ovgq0oxu-j2ie%2Csn-5goeenes&ms=au%2Crdu&mv=m&mvi=1&pl=48&initcwndbps=1132500&vprv=1&svpuc=1&mime=video%2Fmp4&ns=0UQxlwoZGOffioMVPbnmNjgN&cnr=14&ratebypass=yes&dur=840.051&lmt=1593008752867321&mt=1684417756&fvip=5&fexp=24007246&c=WEB&txp=5535432&n=Ae5omg0X503NqLWFo6&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Csvpuc%2Cmime%2Cns%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AOq0QJ8wRgIhAPxXY9Q8T5sAdp3dkxojPH2BHY_04ymvTgNezLmFmWs5AiEAk7yS2FKsvMWLhsCsq7nH0V2_5_p7jbABs8s-9i3b3FQ%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgVxfEoizCrcklNxUnUytyd10qPy08qIcMonf42ecdfCkCIC5vnCe5RoK9SlEcKmbElUdZ_yoh0t2-D_VMyXBn7Hhx' }}
                             useNativeControls={true}
+                            resizeMode="contain"
+                            isLooping={true}
                         />
-                        <StatusBar style={styles.statusBar} />
                     </View>
                 </View>
             </ScrollView>
@@ -134,7 +134,5 @@ const styles = StyleSheet.create({
         height: 200,
         alignSelf: 'center',
     },
-    statusBar: {
-        style: 'auto',
-    },
-});
+},
+);
