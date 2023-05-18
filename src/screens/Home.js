@@ -7,7 +7,7 @@ import {
     Center,
     Progress
 } from 'native-base';
-import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Paho from 'paho-mqtt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import homeImage from '../assets/HomeBackground.png';
@@ -16,6 +16,7 @@ import { HISTORY_DB } from '../constants';
 function Home(props) {
     const { navigation } = props;
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const client = new Paho.Client(
         'broker.hivemq.com',
         Number(8000),
@@ -28,6 +29,7 @@ function Home(props) {
 
     const [message, setMessage] = useState('not connected');
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     function onMessage(message) {
         if (message.destinationName === topic) setMessage(message.payloadString);
         if (message.destinationName === angleTopic) {
@@ -110,6 +112,19 @@ function Home(props) {
         publishTopic(topic, message);
     };
 
+    const renderCard = (navigationRoute, icon, title) => {
+        return (
+            <Center
+                p="5" m="2" borderRadius="md" bg="white" shadow="3"
+                rounded="lg" shaddow="1">
+                <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
+                    <MaterialCommunityIcons name={icon} size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
+                    <Button onPress={() => navigation.navigate(navigationRoute)} variant="subtle" colorScheme="blue">{title}</Button>
+                </HStack>
+            </Center>
+        );
+    };
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
@@ -144,33 +159,12 @@ function Home(props) {
                         </Button>
                     </View>
                 </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="motion-sensor" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('Sensors')} variant="subtle" colorScheme="blue">Sensors</Button>
-                    </HStack>
-                </Center>
+                {renderCard('Sensors', 'motion-sensor', 'Sensors')}
             </ScrollView>
             <Text style={[styles.pageTitle, { paddingBottom: 15, marginTop: 30 }]}>Find out more:</Text>
             <ScrollView horizontal={true} style={{ flex: 1 }} pagingEnabled={true}>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="information-outline" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('AdvicePage')} variant="subtle" colorScheme="blue">Advice</Button>
-                    </HStack>
-                </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="shield-home-outline" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('NewVersion')} variant="subtle" colorScheme="blue">Version 2.0</Button>
-                    </HStack>
-                </Center>
+                {renderCard('AdvicePage', 'information-outline', 'Advice')}
+                {renderCard('NewVersion', 'shield-home-outline', 'Version 2.0')}
             </ScrollView>
             <Text style={styles.text}>Your progress in completing profile: </Text>
             <Progress value={85} mx="4" colorScheme="blue" size="md" />
