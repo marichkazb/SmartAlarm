@@ -49,21 +49,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   payloadBuffer[length] = '\0';
   String payloadMessage = String(payloadBuffer);
 
-
-  int bgColor = TFT_BLACK;
-  if (payloadMessage == "red") {
-    bgColor = TFT_RED;
-  } else if (payloadMessage == "green") {
-    bgColor = TFT_GREEN;
-  } else if (payloadMessage == "blue") {
-    bgColor = TFT_BLUE;
-  } else if (payloadMessage == "yellow") {
-    bgColor = TFT_YELLOW;
-  } else if (payloadMessage == "white") {
-    bgColor = TFT_WHITE;
-  } else if (payloadMessage == "orange") {
-    bgColor = TFT_ORANGE;
-  } else if (payloadMessage == "LED ON") {
+  if (payloadMessage == "LED ON") {
     digitalWrite(RED_LED, HIGH);
   } else if (payloadMessage == "LED OFF") {
     digitalWrite(RED_LED, LOW);
@@ -73,23 +59,28 @@ void callback(char* topic, byte* payload, unsigned int length) {
     isAlarmActivated = false;
   }
 
-  textFormat(bgColor);
+  tft.fillScreen(TFT_WHITE);
+  tft.setTextColor(TFT_BLUE);
 
-  String topMessage = "Message received: ";
+  tft.setTextSize(4);
+  tft.setCursor(cursorSpacing("SMART ALARM"), 20);
+  tft.print("SMART ALARM");
+
+  tft.setTextSize(2);
+  tft.setCursor(cursorSpacing("V 1.0"), 70);
+  tft.print("V1.0");
+
+  tft.drawLine(0, 120, 320, 120, TFT_BLUE);
+
+  String topMessage = "Alarm status: ";
   String bottomMessage = payloadMessage;
 
-  tft.setCursor(cursorSpacing(topMessage), 90);
+  tft.setCursor(cursorSpacing(topMessage), 160);
   tft.print(topMessage);
 
-  tft.setCursor(cursorSpacing(bottomMessage), 120);
+  tft.setCursor(cursorSpacing(bottomMessage), 180);
   tft.print(bottomMessage);
-}
-
-void textFormat(int bgColor) {
-  int textColor = TFT_YELLOW;
-  tft.fillScreen(bgColor);
-  tft.setTextColor(textColor, bgColor);
-  tft.setTextSize(2);
+  delay(2000);
 }
 
 int cursorSpacing(String text) {
@@ -161,13 +152,13 @@ void setup() {
   delay(2000);
 
   tft.begin();
-  tft.fillScreen(TFT_BLACK);
   tft.setRotation(3);
 
   wifiMulti.addAP(SSID_MOBILE, PASSWORD_MOBILE);
   wifiMulti.addAP(SSID_HOME, PASSWORD_HOME);
 
-  tft.fillScreen(TFT_BLACK);
+  tft.fillScreen(TFT_WHITE);
+  tft.setTextColor(TFT_BLUE);
   tft.setTextSize(2);
 
   Serial.println("Connecting Wifi...");
@@ -175,24 +166,23 @@ void setup() {
   tft.setCursor(cursorSpacing("Connecting to Wi-Fi.."), 120);
   tft.print("Connecting to Wi-Fi..");
 
-  if (wifiMulti.run() == WL_CONNECTED) {
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
-
-    tft.setCursor(cursorSpacing("Connected!"), 120);
-    tft.print("Connected!");
+  while (wifiMulti.run() != WL_CONNECTED) {
   }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  tft.fillScreen(TFT_WHITE);
+  tft.setCursor(cursorSpacing("Connected!"), 120);
+  tft.print("Connected!");
 
   client.setServer(MQTT_SERVER, 1883);  // Connect the MQTT Server
   client.setCallback(callback);
 
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
-
   pinMode(PIR_MOTION_SENSOR, INPUT);
-
   pinMode(WIO_BUZZER, OUTPUT);
 
   lis.begin(Wire1);
@@ -201,7 +191,7 @@ void setup() {
   float x_angle = lis.getAccelerationX() * 180 / PI;
   float y_angle = lis.getAccelerationY() * 180 / PI;
   float z_angle = lis.getAccelerationZ() * 180 / PI;
-  angles_sum = x_angle + y_angle + z_angle;  
+  angles_sum = x_angle + y_angle + z_angle;
 }
 
 
@@ -232,7 +222,7 @@ void loop() {
       publishMessages();
 
       if (isAlarmActivated) {
-       digitalWrite(GREEN_LED, HIGH);
+        digitalWrite(GREEN_LED, HIGH);
         client.publish(TOPIC_LED_GREEN, "on");
         client.publish(TOPIC_ALARM_STATUS, "on");
 
@@ -258,11 +248,27 @@ void loop() {
 
         if (nothingActivated) {
           tft.fillScreen(TFT_GREEN);
+          tft.setTextColor(TFT_WHITE);
+
+          tft.setTextSize(4);
+          tft.setCursor(cursorSpacing("DETECTING"), 100);
+          tft.print("DETECTING");
+
           Serial.println("Watching...");
           analogWrite(WIO_BUZZER, 0);
           client.publish(TOPIC_LED_RED, "off");
         } else {
           tft.fillScreen(TFT_RED);
+          tft.setTextColor(TFT_WHITE);
+
+          tft.setTextSize(4);
+          tft.setCursor(cursorSpacing("WARNING"), 100);
+          tft.print("WARNING");
+
+          tft.setTextSize(2);
+          tft.setCursor(cursorSpacing("INTRUSION DETECTED"), 140);
+          tft.print("INTRUSION DETECTED");
+          
           analogWrite(WIO_BUZZER, 128);
           digitalWrite(RED_LED, HIGH);
           delay(200);
