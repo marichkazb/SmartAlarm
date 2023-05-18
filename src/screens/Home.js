@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import homeImage from '../assets/HomeBackground.png';
 import { HISTORY_DB } from '../constants';
 
+const HISTORY_UPDATE_INTERVAL = 180000; //180000 ms = 3 min
 function Home(props) {
     const { navigation } = props;
 
@@ -28,16 +29,21 @@ function Home(props) {
 
     const [message, setMessage] = useState('not connected');
 
+    let angleTimeoutPassed = true;
+    let motionTimeoutPassed = true;
     function onMessage(message) {
-        if (message.destinationName === topic) setMessage(message.payloadString);
-        if (message.destinationName === angleTopic) {
+        if (message.destinationName === topic) {
+            setMessage(message.payloadString);
+        } else if (message.destinationName === angleTopic && angleTimeoutPassed) {
             setHistoryData(getAngleObject(new Date()));
-        }
-        if (message.destinationName === motionTopic) {
+            angleTimeoutPassed = false;
+        } else if (message.destinationName === motionTopic && motionTimeoutPassed) {
+            motionTimeoutPassed = false;
             setHistoryData(getMotionObject(new Date()));
         }
+        setTimeout(() => angleTimeoutPassed = true, HISTORY_UPDATE_INTERVAL); //the message of detecting intrusion will be added once in 3 min
+        setTimeout(() => motionTimeoutPassed = true, HISTORY_UPDATE_INTERVAL); //the message of detecting motion will be added once in 3 min
     }
-
     const formatTime = date => date.toTimeString().slice(0, 8);
 
     const getAngleObject = date => ({
@@ -75,6 +81,8 @@ function Home(props) {
             onSuccess: () => {
                 console.log('Connected!');
                 client.subscribe(topic);
+                client.subscribe(angleTopic);
+                client.subscribe(motionTopic);
                 client.onMessageArrived = onMessage;
             },
             onFailure: () => {
