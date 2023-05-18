@@ -140,35 +140,35 @@ function Home(props) {
                 <Image source={homeImage} style={styles.image} resizeMode="contain" />
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                <Text style={[styles.pageTitle, { paddingBottom: 15 }]}>Control Panel</Text>
-                <MaterialIcons name="history" size={45} color="#2420FF" style={{ paddingBottom: 15, right: 10 }} onPress={() => navigation.navigate('History')} />
+                <Text style={[styles.pageTitle, styles.panelTitle]}>Control Panel</Text>
+                <MaterialIcons name="history" size={45} color="#2420FF" style={styles.historyIcon} onPress={() => navigation.navigate('History')} />
             </View>
-            <ScrollView horizontal={true} style={{ flex: 1 }} pagingEnabled={true}>
+            <ScrollView horizontal={true} style={styles.flex} pagingEnabled={true}>
                 <Center
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
                     rounded="lg" shaddow="1">
-                    <MaterialIcons name="security" size={50} color="#2420FF" style={{ paddingBottom: 10 }} />
+                    <MaterialIcons name="security" size={50} color="#2420FF" style={styles.securityIcon} />
                     <Text>Current status:</Text>
                     <Text>{message}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Button style={{ backgroundColor: '#D8E59E', padding: 10, borderRadius: 5, marginRight: 10 }} onPress={() => turnOn()}>
+                        <Button style={styles.btnOn} onPress={() => turnOn()}>
                             <Text style={{ color: '#44601A' }}>Turn on</Text>
                         </Button>
-                        <Button style={{ backgroundColor: '#F3BBB9', padding: 10, borderRadius: 5 }} onPress={() => turnOff()}>
+                        <Button style={styles.btnOff} onPress={() => turnOff()}>
                             <Text style={{ color: '#E15551' }}>Turn off</Text>
                         </Button>
                     </View>
                 </Center>
                 {renderCard('Sensors', 'motion-sensor', 'Sensors')}
             </ScrollView>
-            <Text style={[styles.pageTitle, { paddingBottom: 15, marginTop: 30 }]}>Find out more:</Text>
-            <ScrollView horizontal={true} style={{ flex: 1 }} pagingEnabled={true}>
+            <Text style={[styles.pageTitle, styles.moreTitle]}>Find out more:</Text>
+            <ScrollView horizontal={true} style={styles.flex} pagingEnabled={true}>
                 {renderCard('AdvicePage', 'information-outline', 'Advice')}
                 {renderCard('NewVersion', 'shield-home-outline', 'Version 2.0')}
             </ScrollView>
             <Text style={styles.text}>Your progress in completing profile: </Text>
             <Progress value={85} mx="4" colorScheme="blue" size="md" />
-            <View style={{ marginBottom: 200 }} />
+            <View style={styles.divider} />
         </ScrollView>
     );
 }
@@ -206,5 +206,36 @@ const styles = StyleSheet.create({
         position: 'relative',
         left: 10,
         right: 10
+    },
+    btnOn: {
+        backgroundColor: '#D8E59E',
+        padding: 10,
+        borderRadius: 5,
+        marginRight: 10
+    },
+    btnOff: {
+        backgroundColor: '#F3BBB9',
+        padding: 10,
+        borderRadius: 5
+    },
+    historyIcon: {
+        paddingBottom: 15,
+        right: 10
+    },
+    divider: {
+        marginBottom: 200
+    },
+    securityIcon: {
+        paddingBottom: 10
+    },
+    flex: {
+        flex: 1
+    },
+    moreTitle: {
+        paddingBottom: 15,
+        marginTop: 30
+    },
+    panelTitle: {
+        paddingBottom: 15
     }
 });
