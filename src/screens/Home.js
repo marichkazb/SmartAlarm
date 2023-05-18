@@ -167,6 +167,7 @@ function Home(props) {
                         </Button>
                     </View>
                 </Center>
+                
                 {renderCard('Sensors', 'motion-sensor', 'Sensors')}
             </ScrollView>
             <Text style={[styles.pageTitle, styles.moreTitle]}>Find out more:</Text>

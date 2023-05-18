@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -6,7 +6,7 @@ import { NativeBaseProvider } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home, History, Settings, Sensors, Emergency, AdvicePage, NewVersion } from './src/screens/index';
+import { Home, History, Settings, Sensors, Emergency, AdvicePage, NewVersion , LockScreen, NewPassword} from './src/screens/index';
 import { HISTORY_DB } from './src/constants';
 
 function formatToLocalString(date) {
@@ -16,7 +16,6 @@ function formatToLocalString(date) {
 function formatTime(time) {
     return time.toLocaleTimeString('en-ca', { hour12: false });
 }
-
 const intrusionHistory = [
     {
         id: Math.random() * 10000,
@@ -59,6 +58,7 @@ const HomeStack = createNativeStackNavigator();
 function HomeStackScreen() {
     return (
         <HomeStack.Navigator>
+            <HomeStack.Screen name="LockScreen" component={LockScreen} />
             <HomeStack.Screen name="Home" options={{ title: '', headerShown: false }} component={Home} />
             <HomeStack.Screen name="History" component={History} />
             <HomeStack.Screen name="Sensors" component={Sensors} />
@@ -66,9 +66,11 @@ function HomeStackScreen() {
             <HomeStack.Screen name="AdvicePage" component={AdvicePage} />
             <HomeStack.Screen name="NewVersion" component={NewVersion} />
             <HomeStack.Screen name="Settings" component={Settings} />
+            <HomeStack.Screen name="NewPassword" component={NewPassword} />
         </HomeStack.Navigator>
     );
 }
+
 function App() {
     LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
     LogBox.ignoreAllLogs();//Ignore all log notifications
