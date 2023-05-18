@@ -124,7 +124,10 @@ function Home(props) {
             <View style={styles.imageContainer}>
                 <Image source={homeImage} style={styles.image} resizeMode="contain" />
             </View>
-            <Text style={[styles.pageTitle, { paddingBottom: 15 }]}>Control Panel</Text>
+            <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                <Text style={[styles.pageTitle, { paddingBottom: 15 }]}>Control Panel</Text>
+                <MaterialIcons name="history" size={45} color="#2420FF" style={{ paddingBottom: 15, right: 10 }} onPress={() => navigation.navigate('History')} />
+            </View>
             <ScrollView horizontal={true} style={{ flex: 1 }} pagingEnabled={true}>
                 <Center
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
@@ -140,21 +143,6 @@ function Home(props) {
                             <Text style={{ color: '#E15551' }}>Turn off</Text>
                         </Button>
                     </View>
-
-                </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <MaterialIcons name="history" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                    <Button onPress={() => navigation.navigate('History')} variant="subtle" colorScheme="blue">View history</Button>
-                </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <Ionicons name="ios-settings-outline" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('Settings')} variant="subtle" colorScheme="blue">Settings</Button>
-                    </HStack>
                 </Center>
                 <Center
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
@@ -164,14 +152,9 @@ function Home(props) {
                         <Button onPress={() => navigation.navigate('Sensors')} variant="subtle" colorScheme="blue">Sensors</Button>
                     </HStack>
                 </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="alert" size={55} color="#dc143c" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('Emergency')} variant="subtle" colorScheme="red">Emergency</Button>
-                    </HStack>
-                </Center>
+            </ScrollView>
+            <Text style={[styles.pageTitle, { paddingBottom: 15, marginTop: 30 }]}>Find out more:</Text>
+            <ScrollView horizontal={true} style={{ flex: 1 }} pagingEnabled={true}>
                 <Center
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
                     rounded="lg" shaddow="1">
@@ -189,16 +172,9 @@ function Home(props) {
                     </HStack>
                 </Center>
             </ScrollView>
-            <Button
-                size="sm" onPress={() => {
-                    setHistoryData(getAngleObject(new Date()));
-                }
-                } mt={8} mx="auto" style={{ top: -15 }}
-                colorScheme="blue">
-                Add history item
-            </Button>
-            <Text style={styles.text}>Your progress in completing your profile: </Text>
+            <Text style={styles.text}>Your progress in completing profile: </Text>
             <Progress value={85} mx="4" colorScheme="blue" size="md" />
+            <View style={{ marginBottom: 200 }} />
         </ScrollView>
     );
 }
