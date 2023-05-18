@@ -2,23 +2,47 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
+import { HISTORY_DB } from '../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage/lib/typescript/AsyncStorage.native';
+
+
+let initialLength = 4;
+
+async function getHistoryItem(index) {
+
+    let itemValue = AsyncStorage.getItem(HISTORY_DB.at(index));
+    let obj = JSON.parse(await itemValue);
+    return obj.body;
+}
+
+function compareDB(){
+    let newDBLength = HISTORY_DB.length;
+    if (newDBLength > initialLength){
+
+        let item = getHistoryItem(HISTORY_DB.length);
+
+        // Either of them.
+        return sendPushNotification(registerForPushNotificationsAsync(), {item})
+        return PushNotifications({item});
+    }
+}
 
     //Deciding on actions allowed while receiving a notification
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowAlert: true,
-            shouldPlaySound: false,
+            shouldPlaySound: true,
             shouldSetBadge: false,
         }),
     });
 
     //Function to enable sending push notifications and their structure
-    async function sendPushNotification(expoPushToken) {
+    async function sendPushNotification(expoPushToken, body) {
         const message = {
             to: expoPushToken,
             sound: 'default',
-            title: 'Something was detected',
-            body: 'body',
+            title: 'Event was detected',
+            body: {body} ,
             data: { someData: 'goes here' },
         };
 
@@ -71,16 +95,17 @@ import { useEffect, useRef, useState } from 'react';
         return token;
     }
 
-
-    export default function PushNotifications() {
+    export default function PushNotifications(body) {
         const [expoPushToken, setExpoPushToken] = useState('');
         const [notification, setNotification] = useState(false);
         const notificationListener = useRef();
         const responseListener = useRef();
 
         useEffect(() => {
-            registerForPushNotificationsAsync()
-                .then(token => setExpoPushToken(token));
+
+            sendPushNotification(registerForPushNotificationsAsync()
+                .then(token => setExpoPushToken(token)), { body })
+                 .then( notification => setNotification(true));
 
             notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
                 setNotification(notification);
@@ -95,15 +120,5 @@ import { useEffect, useRef, useState } from 'react';
                 Notifications.removeNotificationSubscription(responseListener.current);
             };
         }, []);
-
-
-        /*
-        <Button
-            title="Press to Send Notification"
-            onPress={async () => {
-              await sendPushNotification(expoPushToken);
-            }}
-          />
-         */
 
     }
