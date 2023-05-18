@@ -4,11 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NativeBaseProvider } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home, History, Settings, Sensors, Emergency, AdvicePage, NewVersion } from './src/screens/index';
 import { HISTORY_DB } from './src/constants';
-
-
-const Stack = createNativeStackNavigator();
 
 function formatToLocalString(date) {
     return date.toString().slice(4, 15);
@@ -55,51 +54,55 @@ const intrusionHistory = [
 const initializeDatabase = async () => {
     await AsyncStorage.setItem(HISTORY_DB, JSON.stringify(intrusionHistory));
 };
+
+const HomeStack = createNativeStackNavigator();
+function HomeStackScreen() {
+    return (
+        <HomeStack.Navigator>
+            <HomeStack.Screen name="Home" options={{ title: '', headerShown: false }} component={Home} />
+            <HomeStack.Screen name="History" component={History} />
+            <HomeStack.Screen name="Sensors" component={Sensors} />
+            <HomeStack.Screen name="Emergency" component={Emergency} />
+            <HomeStack.Screen name="AdvicePage" component={AdvicePage} />
+            <HomeStack.Screen name="NewVersion" component={NewVersion} />
+            <HomeStack.Screen name="Settings" component={Settings} />
+        </HomeStack.Navigator>
+    );
+}
 function App() {
     LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
     LogBox.ignoreAllLogs();//Ignore all log notifications
     initializeDatabase()
         . then(r => console.log('Initialized history DB'));
+    const Tab = createBottomTabNavigator();
     return (
         <NativeBaseProvider>
             <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen
-                        name="Home"
-                        component={Home}
-                        options={{ title: '', headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="History"
-                        component={History}
-                        options={{ title: 'History' }}
-                    />
-                    <Stack.Screen
-                        name="Settings"
-                        component={Settings}
-                        options={{ title: 'Settings' }}
-                    />
-                    <Stack.Screen
-                        name="Sensors"
-                        component={Sensors}
-                        options={{ title: 'Sensors' }}
-                    />
-                    <Stack.Screen
-                        name="AdvicePage"
-                        component={AdvicePage}
-                        options={{ title: 'AdvicePage' }}
-                    />
-                    <Stack.Screen
-                        name="Emergency"
-                        component={Emergency}
-                        options={{ title: 'Emergency' }}
-                    />
-                    <Stack.Screen
-                        name="NewVersion"
-                        component={NewVersion}
-                        options={{ title: 'NewVersion' }}
-                    />
-                </Stack.Navigator>
+                <Tab.Navigator
+                    screenOptions={({ route }) => ({
+                        tabBarIcon: ({ focused, color, size }) => {
+                            let iconName;
+
+                            if (route.name === 'Home') {
+                                iconName = focused
+                                    ? 'home'
+                                    : 'home-outline';
+                            } else if (route.name === 'Settings') {
+                                iconName = focused ? 'settings-sharp' : 'settings-outline';
+                            } else if (route.name === 'Emergency') {
+                                iconName = focused ? 'alert' : 'alert-outline';
+                                return <MaterialCommunityIcons name={iconName} size={size} color="#dc143c" />;
+                            }
+                            return <Ionicons name={iconName} size={size} color={color} />;
+                        },
+                        tabBarActiveTintColor: route.name === 'Emergency' ? '#dc143c' : '#2420FF',
+                        tabBarInactiveTintColor: route.name === 'gray',
+                        activeTintColor: '#2420FF'
+                    })}>
+                    <Tab.Screen name="Home" options={{ title: 'Home', headerShown: false }} component={HomeStackScreen} />
+                    <Tab.Screen name="Emergency" component={Emergency} />
+                    <Tab.Screen name="Settings" component={Settings} />
+                </Tab.Navigator>
             </NavigationContainer>
         </NativeBaseProvider>
     );
