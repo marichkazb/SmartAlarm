@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -6,7 +6,7 @@ import { NativeBaseProvider } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home, History, Settings, Sensors, Emergency, AdvicePage, NewVersion , LockScreen, NewPassword} from './src/screens/index';
+import { Home, History, Settings, Sensors, Emergency, AdvicePage, NewVersion, LockScreen, NewPassword } from './src/screens/index';
 import { HISTORY_DB } from './src/constants';
 
 function formatToLocalString(date) {
@@ -82,6 +82,7 @@ function App() {
             <NavigationContainer>
                 <Tab.Navigator
                     screenOptions={({ route }) => ({
+                        // eslint-disable-next-line react/no-unstable-nested-components
                         tabBarIcon: ({ focused, color, size }) => {
                             let iconName;
 
