@@ -1,14 +1,11 @@
-import Paho from "paho-mqtt";
-import React, { useState, useEffect } from "react";
+import Paho from 'paho-mqtt';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, FontAwesome5, } from '@expo/vector-icons';
 
 function Sensors() {
-    let client;
-    client = new Paho.Client(
-        "broker.hivemq.com",
+    const client = new Paho.Client(
+        'broker.hivemq.com',
         Number(8000),
         `client-id-${parseInt(Math.random() * 100)}`
     );
@@ -19,41 +16,36 @@ function Sensors() {
     const topic4 = 'sensor-status/redLED';
     const topic5 = 'sensor-status/angleSensor';
     const topic6 = 'sensor-status/speaker';
-    const [message, setMessage] = useState('not connected')
-    const [message2, setMessage2] = useState('not connected')
-    const [message3, setMessage3] = useState('not connected')
-    const [message4, setMessage4] = useState('not connected')
-    const [message5, setMessage5] = useState('not connected')
-    const [message6, setMessage6] = useState('not connected')
+    const [message, setMessage] = useState('not connected');
+    const [message2, setMessage2] = useState('not connected');
+    const [message3, setMessage3] = useState('not connected');
+    const [message4, setMessage4] = useState('not connected');
+    const [message5, setMessage5] = useState('not connected');
+    const [message6, setMessage6] = useState('not connected');
 
     function onMessage(message) {
-        if (message.destinationName === topic1)
-            setMessage(message.payloadString);
-        if (message.destinationName === topic2)
-            setMessage2(message.payloadString);
-        if (message.destinationName === topic3)
-            setMessage3(message.payloadString);
-        if (message.destinationName === topic4)
-            setMessage4(message.payloadString);
-        if (message.destinationName === topic5)
-            setMessage5(message.payloadString);
-        if (message.destinationName === topic6)
-            setMessage6(message.payloadString);
+        if (message.destinationName === topic1) setMessage(message.payloadString);
+        if (message.destinationName === topic2) setMessage2(message.payloadString);
+        if (message.destinationName === topic3) setMessage3(message.payloadString);
+        if (message.destinationName === topic4) setMessage4(message.payloadString);
+        if (message.destinationName === topic5) setMessage5(message.payloadString);
+        if (message.destinationName === topic6) setMessage6(message.payloadString);
     }
 
+    // eslint-disable-next-line no-unused-vars
     function publishTopic(topic, message) {
-// Create a new MQTT message
+        // Create a new MQTT message
         const newMessage = new Paho.Message(message);
         newMessage.destinationName = topic;
 
-// Publish the new message
+        // Publish the new message
         client.send(newMessage);
     }
 
     useEffect(() => {
-        client.connect( {
+        client.connect({
             onSuccess: () => {
-                console.log("Connected!");
+                console.log('Connected!');
                 client.subscribe(topic1);
                 client.subscribe(topic2);
                 client.subscribe(topic3);
@@ -63,13 +55,13 @@ function Sensors() {
                 client.onMessageArrived = onMessage;
             },
             onFailure: () => {
-                console.log("Failed to connect!");
+                console.log('Failed to connect!');
             }
         });
         return () => {
             client.disconnect();
         };
-    })
+    });
 
     return (
         <View style={styles.container}>
@@ -123,7 +115,7 @@ function Sensors() {
 
             </View>
         </View>
-    )
+    );
 }
 
 export default Sensors;
