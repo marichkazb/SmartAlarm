@@ -1,7 +1,6 @@
 import { Center } from 'native-base';
 import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, TextInput, Pressable } from 'react-native';
-import PassMeter from "react-native-passmeter";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { passVisibility } from '../lib/passVisibility';
 import { passVisibility_ } from '../lib/passVisibility_';
@@ -10,10 +9,6 @@ let userPass = '1'; // 1 is the default password when a new user uses the app
 let state = {
     userPass: userPass
 }; // this allows for the password value to be used in LockScreen.js
-
-const MAX_LEN = 15,
-  MIN_LEN = 3,
-  PASS_LABELS = ["Too short", "Weak", "Normal", "Strong", "Secure"];
 
 const NewPassword = ({ navigation }) => {
     const { passwordVisibility, rightIcon, handlePasswordVisibility } =
@@ -60,13 +55,6 @@ const NewPassword = ({ navigation }) => {
             <Pressable onPress={handlePasswordVisibility_} style={{paddingLeft: 330, paddingBottom: 10}}>
                 <MaterialCommunityIcons name={rightIcon_} size={22} color="#232323" />
             </Pressable>
-            <PassMeter
-                showLabels
-                password={newPass}
-                maxLength={MAX_LEN}
-                minLength={MIN_LEN}
-                labels={PASS_LABELS}
-            />
         <TouchableOpacity onPress={handlePasswordChange} style={{padding: 15, marginLeft: 153, marginRight: 50}} >
             <Text style={{fontWeight: 5000, fontSize: 20, paddingTop: 5}}>Save</Text>
         </TouchableOpacity>
