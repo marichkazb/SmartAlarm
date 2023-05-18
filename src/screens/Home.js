@@ -84,7 +84,7 @@ function Home(props) {
         return () => {
             client.disconnect();
         };
-    },);
+    }, [client, onMessage, message]);
 
     function publishTopic(topic, message) {
         const newMessage = new Paho.Message(message);

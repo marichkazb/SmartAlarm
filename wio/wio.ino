@@ -34,7 +34,6 @@ float angles_sum = 0;
 float original_angle = 0;
 boolean angleActivated = false;
 long angleChangedTime = 0;
-boolean angleResponse = false;
 
 void callback(char* topic, byte* payload, unsigned int length) {
 
@@ -135,37 +134,25 @@ boolean angleMonitor() {
   float x_angle = lis.getAccelerationX() * 180 / PI;
   float y_angle = lis.getAccelerationY() * 180 / PI;
   float z_angle = lis.getAccelerationZ() * 180 / PI;
+  float new_angles_sum = x_angle + y_angle + z_angle;
   long nowTime = millis();
 
-  if (nowTime - lastAngleTime > 1000 && nowTime - angleChangedTime > 5000) {
+  if (nowTime - lastAngleTime > 1000) {
 
     lastAngleTime = nowTime;
 
-    float new_angles_sum = x_angle + y_angle + z_angle;
-
-    if (angles_sum != 0) {
-      if (abs(angles_sum - new_angles_sum) > 15 || (abs(original_angle - new_angles_sum) > 15)) {
-        angleActivated = true;
-      } else {
-        angleActivated = false;
-      }
-    } else {
-      original_angle = new_angles_sum;
-    }
-    angles_sum = new_angles_sum;
-
-    if (angleActivated) {
+    if (abs(angles_sum - new_angles_sum) > 30) {
+      angleActivated = true;
       angleChangedTime = millis();
-      Serial.println("Angle activated");
-      client.publish(TOPIC_ANGLE, "on");
-      angleResponse = true;
+      Serial.println(angles_sum);
+      Serial.println(new_angles_sum);
     } else {
-      client.publish(TOPIC_ANGLE, "off");
-      angleResponse = false;
+      angleActivated = false;
     }
-  }
 
-  return angleResponse;
+    angles_sum = new_angles_sum;
+  }
+  return angleActivated;
 }
 
 void setup() {
@@ -211,6 +198,10 @@ void setup() {
   lis.begin(Wire1);
   lis.setOutputDataRate(LIS3DHTR_DATARATE_25HZ);
   lis.setFullScaleRange(LIS3DHTR_RANGE_2G);
+  float x_angle = lis.getAccelerationX() * 180 / PI;
+  float y_angle = lis.getAccelerationY() * 180 / PI;
+  float z_angle = lis.getAccelerationZ() * 180 / PI;
+  angles_sum = x_angle + y_angle + z_angle;  
 }
 
 
@@ -241,26 +232,43 @@ void loop() {
       publishMessages();
 
       if (isAlarmActivated) {
-        digitalWrite(GREEN_LED, HIGH);
+       digitalWrite(GREEN_LED, HIGH);
         client.publish(TOPIC_LED_GREEN, "on");
         client.publish(TOPIC_ALARM_STATUS, "on");
 
-        if (digitalRead(PIR_MOTION_SENSOR) || angleMonitor() ) {
-          tft.fillScreen(TFT_RED);
-          Serial.println("Something is moving!!");
+        boolean nothingActivated = true;
+
+        if (digitalRead(PIR_MOTION_SENSOR)) {
+          nothingActivated = false;
           client.publish(TOPIC_MOTION, "on");
+          Serial.println("Something is moving!!");
+        } else {
+          client.publish(TOPIC_MOTION, "off");
+        }
+
+        if (angleMonitor()) {
+          nothingActivated = false;
+          Serial.println("Angle activated");
+          client.publish(TOPIC_ANGLE, "on");
+          tft.fillScreen(TFT_RED);
+          Serial.println("Device being moved!!");
+        } else {
+          client.publish(TOPIC_ANGLE, "off");
+        }
+
+        if (nothingActivated) {
+          tft.fillScreen(TFT_GREEN);
+          Serial.println("Watching...");
+          analogWrite(WIO_BUZZER, 0);
+          client.publish(TOPIC_LED_RED, "off");
+        } else {
+          tft.fillScreen(TFT_RED);
           analogWrite(WIO_BUZZER, 128);
           digitalWrite(RED_LED, HIGH);
           delay(200);
           analogWrite(WIO_BUZZER, 0);
           digitalWrite(RED_LED, LOW);
           client.publish(TOPIC_LED_RED, "on");
-        } else {
-          tft.fillScreen(TFT_GREEN);
-          Serial.println("Watching...");
-          client.publish(TOPIC_MOTION, "off");
-          analogWrite(WIO_BUZZER, 0);
-          client.publish(TOPIC_LED_RED, "off");
         }
 
         delay(200);
