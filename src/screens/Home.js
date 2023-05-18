@@ -7,7 +7,7 @@ import {
     Center,
     Progress
 } from 'native-base';
-import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Paho from 'paho-mqtt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import homeImage from '../assets/HomeBackground.png';
@@ -17,6 +17,7 @@ const HISTORY_UPDATE_INTERVAL = 180000; //180000 ms = 3 min
 function Home(props) {
     const { navigation } = props;
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const client = new Paho.Client(
         'broker.hivemq.com',
         Number(8000),
@@ -31,6 +32,7 @@ function Home(props) {
 
     let angleTimeoutPassed = true;
     let motionTimeoutPassed = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     function onMessage(message) {
         if (message.destinationName === topic) {
             setMessage(message.payloadString);
@@ -118,6 +120,19 @@ function Home(props) {
         publishTopic(topic, message);
     };
 
+    const renderCard = (navigationRoute, icon, title) => {
+        return (
+            <Center
+                p="5" m="2" borderRadius="md" bg="white" shadow="3"
+                rounded="lg" shaddow="1">
+                <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
+                    <MaterialCommunityIcons name={icon} size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
+                    <Button onPress={() => navigation.navigate(navigationRoute)} variant="subtle" colorScheme="blue">{title}</Button>
+                </HStack>
+            </Center>
+        );
+    };
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
@@ -132,81 +147,36 @@ function Home(props) {
             <View style={styles.imageContainer}>
                 <Image source={homeImage} style={styles.image} resizeMode="contain" />
             </View>
-            <Text style={[styles.pageTitle, { paddingBottom: 15 }]}>Control Panel</Text>
-            <ScrollView horizontal={true} style={{ flex: 1 }} pagingEnabled={true}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                <Text style={[styles.pageTitle, styles.panelTitle]}>Control Panel</Text>
+                <MaterialIcons name="history" size={45} color="#2420FF" style={styles.historyIcon} onPress={() => navigation.navigate('History')} />
+            </View>
+            <ScrollView horizontal={true} style={styles.flex} pagingEnabled={true}>
                 <Center
                     p="5" m="2" borderRadius="md" bg="white" shadow="3"
                     rounded="lg" shaddow="1">
-                    <MaterialIcons name="security" size={50} color="#2420FF" style={{ paddingBottom: 10 }} />
+                    <MaterialIcons name="security" size={50} color="#2420FF" style={styles.securityIcon} />
                     <Text>Current status:</Text>
                     <Text>{message}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Button style={{ backgroundColor: '#D8E59E', padding: 10, borderRadius: 5, marginRight: 10 }} onPress={() => turnOn()}>
+                        <Button style={styles.btnOn} onPress={() => turnOn()}>
                             <Text style={{ color: '#44601A' }}>Turn on</Text>
                         </Button>
-                        <Button style={{ backgroundColor: '#F3BBB9', padding: 10, borderRadius: 5 }} onPress={() => turnOff()}>
+                        <Button style={styles.btnOff} onPress={() => turnOff()}>
                             <Text style={{ color: '#E15551' }}>Turn off</Text>
                         </Button>
                     </View>
-
                 </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <MaterialIcons name="history" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                    <Button onPress={() => navigation.navigate('History')} variant="subtle" colorScheme="blue">View history</Button>
-                </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <Ionicons name="ios-settings-outline" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('Settings')} variant="subtle" colorScheme="blue">Settings</Button>
-                    </HStack>
-                </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="motion-sensor" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('Sensors')} variant="subtle" colorScheme="blue">Sensors</Button>
-                    </HStack>
-                </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="alert" size={55} color="#dc143c" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('Emergency')} variant="subtle" colorScheme="red">Emergency</Button>
-                    </HStack>
-                </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="information-outline" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('AdvicePage')} variant="subtle" colorScheme="blue">Advice</Button>
-                    </HStack>
-                </Center>
-                <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
-                    rounded="lg" shaddow="1">
-                    <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
-                        <MaterialCommunityIcons name="shield-home-outline" size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
-                        <Button onPress={() => navigation.navigate('NewVersion')} variant="subtle" colorScheme="blue">Version 2.0</Button>
-                    </HStack>
-                </Center>
+                {renderCard('Sensors', 'motion-sensor', 'Sensors')}
             </ScrollView>
-            <Button
-                size="sm" onPress={() => {
-                    setHistoryData(getAngleObject(new Date()));
-                }
-                } mt={8} mx="auto" style={{ top: -15 }}
-                colorScheme="blue">
-                Add history item
-            </Button>
-            <Text style={styles.text}>Your progress in completing your profile: </Text>
+            <Text style={[styles.pageTitle, styles.moreTitle]}>Find out more:</Text>
+            <ScrollView horizontal={true} style={styles.flex} pagingEnabled={true}>
+                {renderCard('AdvicePage', 'information-outline', 'Advice')}
+                {renderCard('NewVersion', 'shield-home-outline', 'Version 2.0')}
+            </ScrollView>
+            <Text style={styles.text}>Your progress in completing profile: </Text>
             <Progress value={85} mx="4" colorScheme="blue" size="md" />
+            <View style={styles.divider} />
         </ScrollView>
     );
 }
@@ -244,5 +214,36 @@ const styles = StyleSheet.create({
         position: 'relative',
         left: 10,
         right: 10
+    },
+    btnOn: {
+        backgroundColor: '#D8E59E',
+        padding: 10,
+        borderRadius: 5,
+        marginRight: 10
+    },
+    btnOff: {
+        backgroundColor: '#F3BBB9',
+        padding: 10,
+        borderRadius: 5
+    },
+    historyIcon: {
+        paddingBottom: 15,
+        right: 10
+    },
+    divider: {
+        marginBottom: 200
+    },
+    securityIcon: {
+        paddingBottom: 10
+    },
+    flex: {
+        flex: 1
+    },
+    moreTitle: {
+        paddingBottom: 15,
+        marginTop: 30
+    },
+    panelTitle: {
+        paddingBottom: 15
     }
 });
