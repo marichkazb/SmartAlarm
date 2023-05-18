@@ -115,5 +115,5 @@ const styles = StyleSheet.create({
         color: '#515151',
         paddingEnd: 0,
         padding: 10
-    },
+    }
 });
