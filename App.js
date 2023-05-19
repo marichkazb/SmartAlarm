@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogBox } from 'react-native';
+import { StyleSheet, LogBox, Platform, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NativeBaseProvider } from 'native-base';
@@ -79,36 +79,54 @@ function App() {
     const Tab = createBottomTabNavigator();
     return (
         <NativeBaseProvider>
-            <NavigationContainer>
-                <Tab.Navigator
-                    screenOptions={({ route }) => ({
+            <NavigationContainer style={[Platform.OS === 'web' && styles.webBackground, { flex: 1 }]}>
+                <View style={[Platform.OS === 'web' && styles.webContainer, { flex: 1 }]}>
+                    <Tab.Navigator
+                        screenOptions={({ route }) => ({
                         // eslint-disable-next-line react/no-unstable-nested-components
-                        tabBarIcon: ({ focused, color, size }) => {
-                            let iconName;
+                            tabBarIcon: ({ focused, color, size }) => {
+                                let iconName;
 
-                            if (route.name === 'Home') {
-                                iconName = focused
-                                    ? 'home'
-                                    : 'home-outline';
-                            } else if (route.name === 'Settings') {
-                                iconName = focused ? 'settings-sharp' : 'settings-outline';
-                            } else if (route.name === 'Emergency') {
-                                iconName = focused ? 'alert' : 'alert-outline';
-                                return <MaterialCommunityIcons name={iconName} size={size} color="#dc143c" />;
-                            }
-                            return <Ionicons name={iconName} size={size} color={color} />;
-                        },
-                        tabBarActiveTintColor: route.name === 'Emergency' ? '#dc143c' : '#2420FF',
-                        tabBarInactiveTintColor: route.name === 'gray',
-                        activeTintColor: '#2420FF'
-                    })}>
-                    <Tab.Screen name="Home" options={{ title: 'Home', headerShown: false }} component={HomeStackScreen} />
-                    <Tab.Screen name="Emergency" component={Emergency} />
-                    <Tab.Screen name="Settings" component={Settings} />
-                </Tab.Navigator>
+                                if (route.name === 'Home') {
+                                    iconName = focused
+                                        ? 'home'
+                                        : 'home-outline';
+                                } else if (route.name === 'Settings') {
+                                    iconName = focused ? 'settings-sharp' : 'settings-outline';
+                                } else if (route.name === 'Emergency') {
+                                    iconName = focused ? 'alert' : 'alert-outline';
+                                    return <MaterialCommunityIcons name={iconName} size={size} color="#dc143c" />;
+                                }
+                                return <Ionicons name={iconName} size={size} color={color} />;
+                            },
+                            tabBarActiveTintColor: route.name === 'Emergency' ? '#dc143c' : '#2420FF',
+                            tabBarInactiveTintColor: route.name === 'gray',
+                            activeTintColor: '#2420FF'
+                        })}>
+                        <Tab.Screen name="Home" options={{ title: 'Home', headerShown: false }} component={HomeStackScreen} />
+                        <Tab.Screen name="Emergency" component={Emergency} />
+                        <Tab.Screen name="Settings" component={Settings} />
+                    </Tab.Navigator>
+                </View>
             </NavigationContainer>
         </NativeBaseProvider>
     );
 }
+
+const styles = StyleSheet.create({
+    webContainer: {
+        maxWidth: 400,
+        width: '100%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        height: '100%'
+    },
+    webBackground: {
+        backgroundColor: 'grey',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});
 
 export default App;
