@@ -13,7 +13,7 @@ function Settings() {
             <View style={{ alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row' }}>
                 <Text style={styles.pageTitle}>Settings</Text>
                 <Ionicons name="ios-settings-outline" size={30} color="black" />
-                <Button onPress={() => navigation.navigate('NewPassword')} variant="subtle" colorScheme="blue">Set New Passowrd</Button>
+                <Button onPress={() => navigation.navigate('NewPassword')} variant="subtle" colorScheme="blue">Set New Password</Button>
             </View>
         </ScrollView>
     );
