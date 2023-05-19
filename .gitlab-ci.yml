@@ -1,8 +1,3 @@
-
-workflow:
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
 image: node:alpine
 
 cache:
@@ -60,6 +55,5 @@ web-deploy:
   environment:
     name: production
     url: https://smartalarm.netlify.app/
-  needs: ["web-build"] # not necessary, since deploy stage happens only after build stage
   script:
     - npx netlify-cli deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod --dir=web-build/
