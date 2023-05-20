@@ -8,6 +8,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home, History, Settings, Sensors, Emergency, AdvicePage, NewVersion, LockScreen, NewPassword } from './src/screens/index';
 import { HISTORY_DB } from './src/constants';
+import WebRootComponent from './src/screens/WebRootComponent';
 
 function formatToLocalString(date) {
     return date.toString().slice(4, 15);
@@ -77,40 +78,43 @@ function App() {
     initializeDatabase()
         . then(r => console.log('Initialized history DB'));
     const Tab = createBottomTabNavigator();
-    return (
-        <NativeBaseProvider>
-            <NavigationContainer style={[Platform.OS === 'web' && styles.webBackground, { flex: 1 }]}>
-                <View style={[Platform.OS === 'web' && styles.webContainer, { flex: 1 }]}>
-                    <Tab.Navigator
-                        screenOptions={({ route }) => ({
-                        // eslint-disable-next-line react/no-unstable-nested-components
-                            tabBarIcon: ({ focused, color, size }) => {
-                                let iconName;
+    if (Platform.OS === 'web') {
+        return <WebRootComponent />;
+    } else {
+        return (
+            <NativeBaseProvider>
+                <NavigationContainer style={[Platform.OS === 'web' && styles.webBackground, { flex: 1 }]}>
+                    <View style={[Platform.OS === 'web' && styles.webContainer, { flex: 1 }]}>
+                        <Tab.Navigator
+                            screenOptions={({ route }) => ({
+                                // eslint-disable-next-line react/no-unstable-nested-components
+                                tabBarIcon: ({ focused, color, size }) => {
+                                    let iconName;
 
-                                if (route.name === 'Home') {
-                                    iconName = focused
-                                        ? 'home'
-                                        : 'home-outline';
-                                } else if (route.name === 'Settings') {
-                                    iconName = focused ? 'settings-sharp' : 'settings-outline';
-                                } else if (route.name === 'Emergency') {
-                                    iconName = focused ? 'alert' : 'alert-outline';
-                                    return <MaterialCommunityIcons name={iconName} size={size} color="#dc143c" />;
-                                }
-                                return <Ionicons name={iconName} size={size} color={color} />;
-                            },
-                            tabBarActiveTintColor: route.name === 'Emergency' ? '#dc143c' : '#2420FF',
-                            tabBarInactiveTintColor: route.name === 'gray',
-                            activeTintColor: '#2420FF'
-                        })}>
-                        <Tab.Screen name="Home" options={{ title: 'Home', headerShown: false }} component={HomeStackScreen} />
-                        <Tab.Screen name="Emergency" component={Emergency} />
-                        <Tab.Screen name="Settings" component={Settings} />
-                    </Tab.Navigator>
-                </View>
-            </NavigationContainer>
-        </NativeBaseProvider>
-    );
+                                    if (route.name === 'Home') {
+                                        iconName = focused
+                                            ? 'home'
+                                            : 'home-outline';
+                                    } else if (route.name === 'Settings') {
+                                        iconName = focused ? 'settings-sharp' : 'settings-outline';
+                                    } else if (route.name === 'Emergency') {
+                                        iconName = focused ? 'alert' : 'alert-outline';
+                                        return <MaterialCommunityIcons name={iconName} size={size} color="#dc143c" />;
+                                    }
+                                    return <Ionicons name={iconName} size={size} color={color} />;
+                                },
+                                tabBarActiveTintColor: route.name === 'Emergency' ? '#dc143c' : '#2420FF',
+                                tabBarInactiveTintColor: route.name === 'gray',
+                                activeTintColor: '#2420FF'
+                            })}>
+                            <Tab.Screen name="Home" options={{ title: 'Home', headerShown: false }} component={HomeStackScreen} />
+                            <Tab.Screen name="Emergency" component={Emergency} />
+                            <Tab.Screen name="Settings" component={Settings} />
+                        </Tab.Navigator>
+                    </View>
+                </NavigationContainer>
+            </NativeBaseProvider>
+        ); }
 }
 
 const styles = StyleSheet.create({
