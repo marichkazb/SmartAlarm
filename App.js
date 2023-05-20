@@ -8,6 +8,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home, History, Settings, Sensors, Emergency, AdvicePage, NewVersion, LockScreen, NewPassword } from './src/screens/index';
 import { HISTORY_DB } from './src/constants';
+import { Appearance, useColorScheme } from 'react-native';
 
 function formatToLocalString(date) {
     return date.toString().slice(4, 15);
