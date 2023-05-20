@@ -8,6 +8,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home, History, Settings, Sensors, Emergency, AdvicePage, NewVersion, LockScreen, NewPassword } from './src/screens/index';
 import { HISTORY_DB } from './src/constants';
+import WebRootComponent from './src/screens/WebRootComponent';
 
 function formatToLocalString(date) {
     return date.toString().slice(4, 15);
@@ -77,6 +78,11 @@ function App() {
     initializeDatabase()
         . then(r => console.log('Initialized history DB'));
     const Tab = createBottomTabNavigator();
+
+    if (Platform.OS === 'web') {
+        return <WebRootComponent />;
+    }
+
     return (
         <NativeBaseProvider>
             <NavigationContainer>
