@@ -5,8 +5,9 @@ import { Ionicons, MaterialCommunityIcons, FontAwesome5, } from '@expo/vector-ic
 
 function Sensors() {
     const client = new Paho.Client(
-        'wss://broker.hivemq.com:8000/mqtt', // Use 'wss' protocol and specify the port
-        `client-id-${parseInt(Math.random() * 100)}`,
+        'broker.hivemq.com',
+        Number(8000),
+        `client-id-${parseInt(Math.random() * 100)}`
     );
 
     const topic1 = 'sensor-status/motion';
