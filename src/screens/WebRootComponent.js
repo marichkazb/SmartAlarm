@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, Linking, Pressable } from 'react-native';
 
 function WebRootComponent() {
     const openReadMe = () => {
@@ -28,12 +28,12 @@ function WebRootComponent() {
                 <Text style={styles.phoneMessage}>
                     Note: This page is still entirely <u>built and deployed from within the App</u>.
                 </Text>
-                <TouchableOpacity onPress={openReadMe} style={styles.link}>
+                <Pressable onPress={openReadMe} style={styles.link}>
                     <Text style={styles.linkText}>The Project</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={openPipelines} style={styles.link}>
+                </Pressable>
+                <Pressable onPress={openPipelines} style={styles.link}>
                     <Text style={styles.linkText}>GitLab's CI/CD</Text>
-                </TouchableOpacity>
+                </Pressable >
             </View>
         </ImageBackground>
     );
