@@ -24,8 +24,6 @@ function Sensors() {
         if (message.destinationName === topic2) setMessage2(message.payloadString);
         if (message.destinationName === topic3) setMessage3(message.payloadString);
         if (message.destinationName === topic4) setMessage4(message.payloadString);
-        if (message.destinationName === topic5) setMessage5(message.payloadString);
-        if (message.destinationName === topic6) setMessage6(message.payloadString);
     }
 
     // eslint-disable-next-line no-unused-vars
@@ -46,8 +44,6 @@ function Sensors() {
                 client.subscribe(topic2);
                 client.subscribe(topic3);
                 client.subscribe(topic4);
-                client.subscribe(topic5);
-                client.subscribe(topic6);
                 client.onMessageArrived = onMessage;
             },
             onFailure: () => {
