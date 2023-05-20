@@ -20,7 +20,6 @@ build/
 web-build/
 
 #Babel Config files
-
 babel.config.js
 
 # Other
