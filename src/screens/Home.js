@@ -13,16 +13,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import homeImage from '../assets/HomeBackground.png';
 import { HISTORY_DB } from '../constants';
 
+
+
 const HISTORY_UPDATE_INTERVAL = 180000; //180000 ms = 3 min
 function Home(props) {
     const { navigation } = props;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const client = new Paho.Client(
-        'broker.hivemq.com',
-        Number(8000),
-        `client-id-${parseInt(Math.random() * 100)}`
-    );
+    'wss://broker.hivemq.com:8000/mqtt', // Use 'wss' protocol and specify the port
+    `client-id-${parseInt(Math.random() * 100)}`,
+);
 
     const topic = 'sensor-status/alarm';
     const angleTopic = 'sensor-status/angleSensor';
