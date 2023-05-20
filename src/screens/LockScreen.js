@@ -35,7 +35,7 @@ function LockScreen({ navigation }) {
             </Pressable>
             {error ? <Text style={{ padding: 13 }}>{error}</Text> : null}
             <TouchableOpacity onPress={handleUnlock} style={{ padding: 15, marginLeft: 145, marginRight: 50 }}>
-                <Text style={{ fontWeight: 5000, fontSize: 20 }}>Unlock</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Unlock</Text>
             </TouchableOpacity>
         </View>
     );

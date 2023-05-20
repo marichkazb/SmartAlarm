@@ -57,7 +57,7 @@ function NewPassword({ navigation }) {
                 <MaterialCommunityIcons name={rightIcon_} size={22} color="#232323" />
             </Pressable>
             <TouchableOpacity onPress={handlePasswordChange} style={{ padding: 15, marginLeft: 153, marginRight: 50 }} >
-                <Text style={{ fontWeight: 5000, fontSize: 20, paddingTop: 5 }}>Save</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 20, paddingTop: 5 }}>Save</Text>
             </TouchableOpacity>
         </View>
 
