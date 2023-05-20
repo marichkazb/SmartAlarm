@@ -1,7 +1,7 @@
 import Paho from 'paho-mqtt';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Ionicons, MaterialCommunityIcons, FontAwesome5, } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function Sensors() {
     const client = new Paho.Client(
@@ -11,17 +11,13 @@ function Sensors() {
     );
 
     const topic1 = 'sensor-status/motion';
-    const topic2 = 'sensor-status/button';
-    const topic3 = 'sensor-status/greenLED';
-    const topic4 = 'sensor-status/redLED';
-    const topic5 = 'sensor-status/angleSensor';
-    const topic6 = 'sensor-status/speaker';
+    const topic2 = 'sensor-status/greenLED';
+    const topic3 = 'sensor-status/redLED';
+    const topic4 = 'sensor-status/angleSensor';
     const [message, setMessage] = useState('not connected');
     const [message2, setMessage2] = useState('not connected');
     const [message3, setMessage3] = useState('not connected');
     const [message4, setMessage4] = useState('not connected');
-    const [message5, setMessage5] = useState('not connected');
-    const [message6, setMessage6] = useState('not connected');
 
     function onMessage(message) {
         if (message.destinationName === topic1) setMessage(message.payloadString);
@@ -80,39 +76,24 @@ function Sensors() {
 
                 <View style={styles.itemContainer}>
                     <View style={styles.itemWrapper}>
-                        <Ionicons name="radio-button-on" size={24} color="white" />
-                        <Text>Button status is: {message2}</Text>
-                    </View>
-                </View>
-
-                <View style={styles.itemContainer}>
-                    <View style={styles.itemWrapper}>
                         <MaterialCommunityIcons name="led-off" size={24} color="#09814A" />
-                        <Text>Green LED status is: {message3}</Text>
+                        <Text>Green LED status is: {message2}</Text>
                     </View>
                 </View>
 
                 <View style={styles.itemContainer}>
                     <View style={styles.itemWrapper}>
                         <MaterialCommunityIcons name="led-off" size={24} color="#ED474A" />
-                        <Text>Red LED status is: {message4}</Text>
+                        <Text>Red LED status is: {message3}</Text>
                     </View>
                 </View>
 
                 <View style={styles.itemContainer}>
                     <View style={styles.itemWrapper}>
                         <MaterialCommunityIcons name="spirit-level" size={24} color="white" />
-                        <Text>Angle sensor status is: {message5}</Text>
+                        <Text>Angle sensor status is: {message4}</Text>
                     </View>
                 </View>
-
-                <View style={styles.itemContainer}>
-                    <View style={styles.itemWrapper}>
-                        <FontAwesome5 name="volume-up" size={24} color="white" />
-                        <Text>Speaker status is: {message6}</Text>
-                    </View>
-                </View>
-
             </View>
         </View>
     );
