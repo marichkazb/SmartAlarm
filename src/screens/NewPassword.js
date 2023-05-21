@@ -1,7 +1,5 @@
-/* eslint-disable react-native/no-unused-styles */
-import { Center } from 'native-base';
 import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, TextInput, Pressable } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, Text, TextInput, Pressable, useColorScheme } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { PassVisibility } from '../lib/passVisibility';
 import { PassVisibility_ } from '../lib/passVisibility_';
@@ -17,6 +15,7 @@ function NewPassword({ navigation }) {
     const { passwordVisibility_, rightIcon_, handlePasswordVisibility_ } =
     PassVisibility_();
     const [error, setError] = useState('');
+
     const [oldPass, setOldPass] = useState('');
     const [newPass, setNewPass] = useState('');
     const handlePasswordChange = () => {
@@ -28,8 +27,62 @@ function NewPassword({ navigation }) {
         }
     };
 
+    const colorScheme = useColorScheme();
+    const styles = StyleSheet.create({
+        input: {
+            height: 45,
+            margin: 12,
+            borderWidth: 1,
+            borderRadius: 5,
+            padding: 10,
+            backgroundColor: colorScheme === 'light' ? '#C0C0C0' : '#333',
+            color: colorScheme === 'dark' ? '#C0C0C0' : '#000',
+        },
+        button: {
+            textAlign: 'center',
+            backgroundColor: colorScheme === 'light' ? '#FFF' : '#2420FF',
+            padding: 15,
+            alignItems: 'center',
+            marginLeft: '30%',
+            marginRight: '30%',
+            borderRadius: 5,
+            shadowOffset: {
+                width: 0,
+                height: 4
+            },
+            shadowOpacity: 2,
+        },
+        error: {
+            padding: 13,
+            color: colorScheme === 'dark' ? '#FFF' : '#2420FF',
+        },
+        btnText: {
+            fontWeight: 5000,
+            fontSize: 20,
+            paddingTop: 5,
+            color: colorScheme === 'dark' ? '#FFF' : '#2420FF',
+            backgroundColor: colorScheme === 'light' ? '#FFF' : '#2420FF',
+        },
+        icon: {
+            color: colorScheme === 'dark' ? '#FFF' : '#2420FF',
+            fontSize: 22,
+        },
+        container: {
+            paddingTop: '10%',
+            backgroundColor: colorScheme === 'light' ? 'white' : 'black',
+        },
+        text: {
+            fontSize: 22,
+            fontWeight: '300',
+            color: colorScheme === 'light' ? '#515151' : '#C0C0C0',
+            paddingEnd: 0,
+            padding: 10
+        }
+    });
+
     return (
-        <View>
+        <ScrollView style={styles.container}>
+
             <Text style={styles.text}>Old Password</Text>
             <TextInput
                 secureTextEntry={passwordVisibility}
@@ -39,10 +92,14 @@ function NewPassword({ navigation }) {
                 value={oldPass}
                 onChangeText={setOldPass}
             />
+
             <Pressable onPress={handlePasswordVisibility} style={{ paddingLeft: 330 }}>
-                <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+                <MaterialCommunityIcons name={rightIcon} style={styles.icon} />
+
             </Pressable>
-            {error ? <Text style={{ padding: 10 }}>{error}</Text> : null}
+
+            {error ? <Text style={styles.error}>{error}</Text> : null}
+
             <Text style={styles.text}>New Password</Text>
             <TextInput
                 secureTextEntry={passwordVisibility_}
@@ -53,56 +110,19 @@ function NewPassword({ navigation }) {
                 value={newPass}
                 onChangeText={setNewPass}
             />
+
             <Pressable onPress={handlePasswordVisibility_} style={{ paddingLeft: 330, paddingBottom: 10 }}>
-                <MaterialCommunityIcons name={rightIcon_} size={22} color="#232323" />
+                <MaterialCommunityIcons name={rightIcon_} style={styles.icon} />
             </Pressable>
-            <TouchableOpacity onPress={handlePasswordChange} style={{ padding: 15, marginLeft: 153, marginRight: 50 }} >
-                <Text style={{ fontWeight: 'bold', fontSize: 20, paddingTop: 5 }}>Save</Text>
+
+            <TouchableOpacity onPress={handlePasswordChange} style={styles.button} >
+                <Text style={styles.btnText}>Save</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
 
     );
 }
 
-
 export { state };
 
 export default NewPassword;
-
-const styles = StyleSheet.create({
-    inputView: {
-        backgroundColor: '#FFC0CB',
-        borderRadius: 30,
-        width: '70%',
-        height: 45,
-        marginBottom: 20,
-        alignItems: 'center',
-    },
-    button: {
-        textAlign: Center
-    },
-    input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-    },
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        paddingTop: 30,
-        padding: 10
-    },
-    pageTitle: {
-        fontSize: 40,
-        fontWeight: '400',
-        flex: 1
-    },
-    text: {
-        fontSize: 17,
-        fontWeight: '300',
-        color: '#515151',
-        paddingEnd: 0,
-        padding: 10
-    }
-});

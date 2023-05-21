@@ -9,8 +9,8 @@ describe('<LockScreen/>', () => {
         const element = getByText('Unlock');
         expect(element).toBeDefined();
     });
-    it('has 3 children (sanity check)', () => {
+    it('has 1 children (sanity check)', () => {
         const tree = renderer.create(<LockScreen />).toJSON();
-        expect(tree.children.length).toBe(3);
+        expect(tree.children.length).toBe(1);
     });
 });

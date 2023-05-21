@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogBox, Platform } from 'react-native';
+import { LogBox, useColorScheme, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NativeBaseProvider } from 'native-base';
@@ -57,17 +57,93 @@ const initializeDatabase = async () => {
 
 const HomeStack = createNativeStackNavigator();
 function HomeStackScreen() {
+    const schemeColor = useColorScheme();
+
     return (
         <HomeStack.Navigator>
-            <HomeStack.Screen name="LockScreen" component={LockScreen} />
-            <HomeStack.Screen name="Home" options={{ title: '', headerShown: false }} component={Home} />
-            <HomeStack.Screen name="History" component={History} />
-            <HomeStack.Screen name="Sensors" component={Sensors} />
-            <HomeStack.Screen name="Emergency" component={Emergency} />
-            <HomeStack.Screen name="AdvicePage" component={AdvicePage} />
-            <HomeStack.Screen name="NewVersion" component={NewVersion} />
+            <HomeStack.Screen
+                name="LockScreen" component={LockScreen} options={{
+                    headerStyle: {
+                        backgroundColor: schemeColor === 'light' ? 'white' : 'black',
+                    },
+                    headerTitleStyle: {
+                        color: schemeColor === 'dark' ? 'white' : 'black',
+                    }
+                }}
+            />
+            <HomeStack.Screen
+                name="Home" options={{
+                    title: '',
+                    headerShown: false,
+                    headerStyle: {
+                        backgroundColor: schemeColor === 'light' ? 'white' : 'black',
+                    },
+                    headerTitleStyle: {
+                        color: schemeColor === 'dark' ? 'white' : 'black',
+                    }
+                }} component={Home}
+            />
+            <HomeStack.Screen
+                name="History" component={History} options={{
+                    headerStyle: {
+                        backgroundColor: schemeColor === 'light' ? 'white' : 'black',
+                    },
+                    headerTitleStyle: {
+                        color: schemeColor === 'dark' ? 'white' : 'black',
+                    }
+                }}
+            />
+            <HomeStack.Screen
+                name="Sensors" component={Sensors} options={{
+                    headerStyle: {
+                        backgroundColor: schemeColor === 'light' ? 'white' : 'black',
+                    },
+                    headerTitleStyle: {
+                        color: schemeColor === 'dark' ? 'white' : 'black',
+                    }
+                }}
+            />
+            <HomeStack.Screen
+                name="Emergency" component={Emergency} screenOptions={{
+                    headerStyle: {
+                        backgroundColor: schemeColor === 'light' ? 'white' : 'black',
+                    },
+                    headerTitleStyle: {
+                        color: schemeColor === 'dark' ? 'white' : 'black',
+                    }
+                }}
+            />
+            <HomeStack.Screen
+                name="AdvicePage" component={AdvicePage} options={{
+                    headerStyle: {
+                        backgroundColor: schemeColor === 'light' ? 'white' : 'black',
+                    },
+                    headerTitleStyle: {
+                        color: schemeColor === 'dark' ? 'white' : 'black',
+                    }
+                }}
+            />
+            <HomeStack.Screen
+                name="NewVersion" component={NewVersion} options={{
+                    headerStyle: {
+                        backgroundColor: schemeColor === 'light' ? 'white' : 'black',
+                    },
+                    headerTitleStyle: {
+                        color: schemeColor === 'dark' ? 'white' : 'black',
+                    }
+                }}
+            />
             <HomeStack.Screen name="Settings" component={Settings} />
-            <HomeStack.Screen name="NewPassword" component={NewPassword} />
+            <HomeStack.Screen
+                name="NewPassword" component={NewPassword} options={{
+                    headerStyle: {
+                        backgroundColor: schemeColor === 'light' ? 'white' : 'black',
+                    },
+                    headerTitleStyle: {
+                        color: schemeColor === 'dark' ? 'white' : 'black',
+                    }
+                }}
+            />
         </HomeStack.Navigator>
     );
 }
@@ -78,6 +154,8 @@ function App() {
     initializeDatabase()
         . then(r => console.log('Initialized history DB'));
     const Tab = createBottomTabNavigator();
+
+    const colorScheme = useColorScheme();
 
     if (Platform.OS === 'web') {
         return <WebRootComponent />;
@@ -105,12 +183,36 @@ function App() {
                             return <Ionicons name={iconName} size={size} color={color} />;
                         },
                         tabBarActiveTintColor: route.name === 'Emergency' ? '#dc143c' : '#2420FF',
-                        tabBarInactiveTintColor: route.name === 'gray',
-                        activeTintColor: '#2420FF'
+                        tabBarInactiveTintColor: route.name === '#fff',
+                        activeTintColor: '#2420FF',
+                        tabBarStyle: {
+                            backgroundColor: colorScheme === 'light' ? 'white' : '#303030',
+                        },
+                        tabBarItemStyle: {
+                            color: colorScheme === 'dark' ? '#fff' : '#000',
+                        },
                     })}>
                     <Tab.Screen name="Home" options={{ title: 'Home', headerShown: false }} component={HomeStackScreen} />
-                    <Tab.Screen name="Emergency" component={Emergency} />
-                    <Tab.Screen name="Settings" component={Settings} />
+                    <Tab.Screen
+                        name="Emergency" component={Emergency} options={{
+                            headerStyle: {
+                                backgroundColor: colorScheme === 'light' ? 'white' : 'black',
+                            },
+                            headerTitleStyle: {
+                                color: colorScheme === 'dark' ? 'white' : 'black',
+                            }
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Settings" component={Settings} options={{
+                            headerStyle: {
+                                backgroundColor: colorScheme === 'light' ? 'white' : 'black',
+                            },
+                            headerTitleStyle: {
+                                color: colorScheme === 'dark' ? 'white' : 'black',
+                            }
+                        }}
+                    />
                 </Tab.Navigator>
             </NavigationContainer>
         </NativeBaseProvider>

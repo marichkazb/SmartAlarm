@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from 'native-base';
@@ -66,13 +66,89 @@ function History() {
         getHistoryData(); //is called on the component mount
     });
 
+    const colorScheme = useColorScheme();
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: colorScheme === 'light' ? 'white' : 'black',
+            padding: 10
+        },
+        pageTitle: {
+            fontSize: 50,
+            fontWeight: '700',
+            color: colorScheme === 'light' ? 'black' : 'white',
+        },
+        pageDesc: {
+            color: '#797979',
+            fontSize: 25,
+            fontWeight: '300',
+        },
+        title: {
+            fontSize: 27,
+            fontWeight: '400',
+            maxWidth: '65%',
+            color: colorScheme === 'light' ? 'black' : 'white',
+        },
+        desc: {
+            paddingLeft: 2,
+            paddingTop: 5,
+            fontSize: 17,
+            fontWeight: '200',
+            color: colorScheme === 'light' ? 'black' : 'white',
+        },
+        dateTime: {
+            fontSize: 16,
+            color: '#797979'
+        },
+        itemWrapper: {
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
+        status: {
+            paddingLeft: 3,
+            flexWrap: 'wrap'
+        },
+        resolved: {
+            color: '#06891b'
+        },
+        notResolved: {
+            color: '#f88383'
+        },
+        itemContainer: {
+            paddingTop: 30,
+            backgroundColor: colorScheme === 'light' ? 'white' : 'black',
+            shadowRadius: 3,
+            shadowOpacity: '10%',
+            shadowOffset: { width: 0, height: 4 },
+            shadowColor: '#d8d8d8',
+            elevation: 2,
+            borderRadius: 30,
+            padding: 20,
+            marginBottom: 20
+        },
+        titleContainer: {
+            padding: 10,
+        },
+        statusContainer: {
+            flexDirection: 'row',
+            paddingTop: 10,
+            justifyContent: 'space-between'
+        },
+        contentContainer: {
+            paddingVertical: 10,
+            marginHorizontal: 10,
+            color: colorScheme === 'light' ? 'black' : 'white',
+        }
+    });
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.pageTitle}>History</Text>
                 <Text style={styles.pageDesc}>View the history of intrusion to your home</Text>
             </View>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
+            <ScrollView style={styles.contentContainer}>
                 {!(database.length === 0) && database.map(item => renderItem(item))}
             </ScrollView>
         </View>
@@ -80,73 +156,3 @@ function History() {
 }
 
 export default History;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#ffffff',
-        padding: 10,
-    },
-    pageTitle: {
-        fontSize: 50,
-        fontWeight: '700',
-    },
-    pageDesc: {
-        color: '#797979',
-        fontSize: 25,
-        fontWeight: '300',
-    },
-    title: {
-        fontSize: 27,
-        fontWeight: '400',
-        maxWidth: '65%'
-    },
-    desc: {
-        paddingLeft: 2,
-        paddingTop: 5,
-        fontSize: 17,
-        fontWeight: '200'
-    },
-    dateTime: {
-        fontSize: 16,
-        color: '#797979'
-    },
-    itemWrapper: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    status: {
-        paddingLeft: 3,
-        flexWrap: 'wrap'
-    },
-    resolved: {
-        color: '#06891b'
-    },
-    notResolved: {
-        color: '#f88383'
-    },
-    itemContainer: {
-        paddingTop: 30,
-        backgroundColor: '#fff',
-        shadowRadius: 3,
-        shadowOpacity: '10%',
-        shadowOffset: { width: 0, height: 4 },
-        shadowColor: '#d8d8d8',
-        elevation: 2,
-        borderRadius: 30,
-        padding: 20,
-        marginBottom: 20
-    },
-    titleContainer: {
-        padding: 10
-    },
-    statusContainer: {
-        flexDirection: 'row',
-        paddingTop: 10,
-        justifyContent: 'space-between'
-    },
-    contentContainer: {
-        paddingVertical: 10, marginHorizontal: 10
-    }
-});

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView, useColorScheme } from 'react-native';
 import {
     Button,
     HStack,
@@ -120,10 +120,83 @@ function Home(props) {
         publishTopic(topic, message);
     };
 
+    const colorScheme = useColorScheme();
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: colorScheme === 'light' ? 'white' : 'black',
+            paddingTop: 60,
+            padding: 10
+        },
+        headerContainer: {
+            alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'
+        },
+        pageTitle: {
+            fontSize: 40,
+            fontWeight: '400',
+            flex: 1,
+            color: colorScheme === 'light' ? 'black' : 'white',
+        },
+        text: {
+            fontSize: 20,
+            fontWeight: '300',
+            color: '#515151',
+            paddingVertical: 20
+        },
+        imageContainer: {
+            width: 380,
+            height: 270
+        },
+        image: {
+            width: '100%',
+            height: '100%',
+            position: 'relative',
+            left: 10,
+            right: 10
+        },
+        btnOn: {
+            backgroundColor: '#D8E59E',
+            padding: 10,
+            borderRadius: 5,
+            marginRight: 10
+        },
+        btnOff: {
+            backgroundColor: '#F3BBB9',
+            padding: 10,
+            borderRadius: 5
+        },
+        historyIcon: {
+            paddingBottom: 15,
+            right: 10
+        },
+        divider: {
+            marginBottom: 200
+        },
+        securityIcon: {
+            paddingBottom: 10
+        },
+        flex: {
+            flex: 1
+        },
+        moreTitle: {
+            paddingBottom: 15,
+            marginTop: 30,
+            color: colorScheme === 'light' ? 'black' : 'white',
+        },
+        panelTitle: {
+            paddingBottom: 15
+        },
+        statusText: {
+            color: colorScheme === 'light' ? 'black' : 'white',
+            paddingBottom: 2,
+        }
+    });
+    const bgColor = colorScheme === 'light' ? 'white' : 'black';
+
     const renderCard = (navigationRoute, icon, title) => (
         <Center
-            p="5" m="2" borderRadius="md" bg="white" shadow="3"
-            rounded="lg" shaddow="1">
+            p="5" m="2" borderRadius="lg" bg={bgColor} shadow="3"
+            rounded="lg">
             <HStack justifyContent="center" flexDirection="column" alignItems="center" width={100} >
                 <MaterialCommunityIcons name={icon} size={55} color="#2420FF" style={{ paddingBottom: 30 }} />
                 <Button onPress={() => navigation.navigate(navigationRoute)} variant="subtle" colorScheme="blue">{title}</Button>
@@ -151,12 +224,12 @@ function Home(props) {
             </View>
             <ScrollView horizontal={true} style={styles.flex} pagingEnabled={true}>
                 <Center
-                    p="5" m="2" borderRadius="md" bg="white" shadow="3"
+                    p="5" m="2" borderRadius="md" bg={bgColor} shadow="3"
                     rounded="lg" shaddow="1">
                     <MaterialIcons name="security" size={50} color="#2420FF" style={styles.securityIcon} />
-                    <Text>Current status:</Text>
-                    <Text>{message}</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={styles.statusText}>Current status:</Text>
+                    <Text style={styles.statusText}>{message}</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 2 }}>
                         <Button style={styles.btnOn} onPress={() => turnOn()}>
                             <Text style={{ color: '#44601A' }}>Turn on</Text>
                         </Button>
@@ -169,7 +242,7 @@ function Home(props) {
                 {renderCard('Sensors', 'motion-sensor', 'Sensors')}
             </ScrollView>
             <Text style={[styles.pageTitle, styles.moreTitle]}>Find out more:</Text>
-            <ScrollView horizontal={true} style={styles.flex} pagingEnabled={true}>
+            <ScrollView horizontal={true} style={[styles.flex, { shadowColor: 'grey' }]} pagingEnabled={true}>
                 {renderCard('AdvicePage', 'information-outline', 'Advice')}
                 {renderCard('NewVersion', 'shield-home-outline', 'Version 2.0')}
             </ScrollView>
@@ -181,68 +254,3 @@ function Home(props) {
 }
 
 export default Home;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        paddingTop: 60,
-        padding: 10
-    },
-    headerContainer: {
-        alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'
-    },
-    pageTitle: {
-        fontSize: 40,
-        fontWeight: '400',
-        flex: 1
-    },
-    text: {
-        fontSize: 20,
-        fontWeight: '300',
-        color: '#515151',
-        paddingVertical: 20
-    },
-    imageContainer: {
-        width: 380,
-        height: 270
-    },
-    image: {
-        width: '100%',
-        height: '100%',
-        position: 'relative',
-        left: 10,
-        right: 10
-    },
-    btnOn: {
-        backgroundColor: '#D8E59E',
-        padding: 10,
-        borderRadius: 5,
-        marginRight: 10
-    },
-    btnOff: {
-        backgroundColor: '#F3BBB9',
-        padding: 10,
-        borderRadius: 5
-    },
-    historyIcon: {
-        paddingBottom: 15,
-        right: 10
-    },
-    divider: {
-        marginBottom: 200
-    },
-    securityIcon: {
-        paddingBottom: 10
-    },
-    flex: {
-        flex: 1
-    },
-    moreTitle: {
-        paddingBottom: 15,
-        marginTop: 30
-    },
-    panelTitle: {
-        paddingBottom: 15
-    }
-});

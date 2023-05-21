@@ -14,8 +14,8 @@ describe('<NewPassword/>', () => {
         const element = getByText('New Password');
         expect(element).toBeDefined();
     });
-    it('has 7 children (sanity check)', () => {
+    it('has 1 children (sanity check)', () => {
         const tree = renderer.create(<NewPassword />).toJSON();
-        expect(tree.children.length).toBe(7);
+        expect(tree.children.length).toBe(1);
     });
 });
