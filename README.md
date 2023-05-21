@@ -18,14 +18,14 @@ The system features a device which can be placed at a substantial spot in the ho
 <details>
 <summary>Intruder detection</summary>
 
->Whenever an intruder is detected, a red LED will be activated, the speaker will produce an alerting sound and a notification will be sent to a remote device to inform about the danger.
+>Whenever an intruder is detected, a red LED will be activated, the speaker will produce an alerting sound using a buzzer to inform about the danger.
 
 </details>
 
 <details>
 <summary>Anti-Tampering protection</summary>
 
->Detects whether someone is trying to move or damage the device itself by integrating a gyroscope sensor. A red LED and alerting speakers are activated immediately.
+>Detects whether someone is trying to move or damage the device itself by integrating a gyroscope sensor. A red LED and alerting buzzer are activated immediately.
 
 </details>
 
@@ -33,13 +33,6 @@ The system features a device which can be placed at a substantial spot in the ho
 <summary>Activated device indicator</summary>
 
 >Indicates that the vicinity is protected, signaling the owner and deterring would-be intruders. Uses a green LED.
-
-</details>
-
-<details>
-<summary>Connection testing</summary>
-
->Check if the communication is working as intended, in which case clicking a physical button will allow users to ping the remote device.
 
 </details>
 
