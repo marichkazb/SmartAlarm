@@ -1,14 +1,17 @@
+/* eslint-disable react-native/no-unused-styles */
 import React, { useState } from 'react';
+
 import { ScrollView, Text, TextInput, TouchableOpacity, Pressable, StyleSheet, useColorScheme } from 'react-native';
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { state } from './NewPassword.js';
-import { passVisibility } from '../lib/passVisibility';
+import { PassVisibility } from '../lib/passVisibility';
 
-const LockScreen = ({ navigation }) => {
+function LockScreen({ navigation }) {
     const [password, setPassword] = useState();
     const [error, setError] = useState('');
     const { passwordVisibility, rightIcon, handlePasswordVisibility } =
-    passVisibility();
+    PassVisibility();
 
     const handleUnlock = () => {
         if (password === state.userPass) {
@@ -21,6 +24,8 @@ const LockScreen = ({ navigation }) => {
     const colorScheme = useColorScheme();
     const styles = StyleSheet.create({
         container: {
+            // flex: 1,
+            // backgroundColor: '#fff',
             paddingTop: '10%',
             backgroundColor: colorScheme === 'light' ? 'white' : 'black',
         },
@@ -51,7 +56,7 @@ const LockScreen = ({ navigation }) => {
             color: colorScheme === 'dark' ? '#FFF' : '#2420FF',
         },
         unlockText: {
-            fontWeight: 5000,
+            fontWeight: 'bold',
             fontSize: 20,
             color: colorScheme === 'dark' ? '#FFF' : '#2420FF',
             backgroundColor: colorScheme === 'light' ? '#FFF' : '#2420FF',
@@ -67,21 +72,25 @@ const LockScreen = ({ navigation }) => {
             <TextInput
                 secureTextEntry={passwordVisibility}
                 style={styles.input}
-                inputMode='text'
+                inputMode="text"
                 placeholder="Enter password"
                 value={password}
                 onChangeText={setPassword}
             />
             <Pressable onPress={handlePasswordVisibility} style={{ paddingLeft: 330 }}>
+
                 <MaterialCommunityIcons name={rightIcon} size={22} style={styles.icon} />
             </Pressable>
+
+
             {error ? <Text style={styles.error}>{error}</Text> : null}
             <TouchableOpacity onPress={handleUnlock} style={styles.unlockBtn}>
                 <Text style={styles.unlockText}>Unlock</Text>
             </TouchableOpacity>
         </ScrollView>
     );
-};
+}
 
 export default LockScreen;
+
 

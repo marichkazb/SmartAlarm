@@ -82,6 +82,8 @@ Install NodeJS:
 ## 📃 Documentation
 
 * [Wiki](https://git.chalmers.se/courses/dit113/2023/group-5/smartalarm/-/wikis/home)
+* [General Documentation](https://drive.google.com/drive/folders/1s_yNdp31QmD7Ln1M4WMi1G9Pj-dcXLT2?usp=sharing)
+* [User Manual](https://docs.google.com/document/d/1bAcS2MCeM9MgyR5oG2jDIKEw0J4wggHbujKBYlBWEz0/edit?usp=sharing)
 
 ---
 ## 🚨 Project status

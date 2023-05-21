@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, useColorScheme } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
+import videoUrl from '../assets/safetyTips.mp4';
 
 function AdvicePage() {
     const video = React.useRef(null);
@@ -63,7 +64,7 @@ function AdvicePage() {
             alignSelf: 'center',
         },
     },
-);
+    );
 
 
     return (
@@ -125,7 +126,7 @@ function AdvicePage() {
                         <Video
                             ref={video}
                             style={styles.video}
-                            source={{ uri: 'https://rr1---sn-ovgq0oxu-j2ie.googlevideo.com/videoplayback?expire=1684439828&ei=tC5mZKuaA8yXv_IP97KoyAw&ip=2001%3A6b0%3A4f%3A2801%3A489e%3Ad7c8%3Aea13%3Af298&id=o-AIijJRvWSQpbe42lGhxksdfp5tuli7fjq5sIkyq0cehU&itag=22&source=youtube&requiressl=yes&mh=CG&mm=31%2C29&mn=sn-ovgq0oxu-j2ie%2Csn-5goeenes&ms=au%2Crdu&mv=m&mvi=1&pl=48&initcwndbps=1132500&vprv=1&svpuc=1&mime=video%2Fmp4&ns=0UQxlwoZGOffioMVPbnmNjgN&cnr=14&ratebypass=yes&dur=840.051&lmt=1593008752867321&mt=1684417756&fvip=5&fexp=24007246&c=WEB&txp=5535432&n=Ae5omg0X503NqLWFo6&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Csvpuc%2Cmime%2Cns%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AOq0QJ8wRgIhAPxXY9Q8T5sAdp3dkxojPH2BHY_04ymvTgNezLmFmWs5AiEAk7yS2FKsvMWLhsCsq7nH0V2_5_p7jbABs8s-9i3b3FQ%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgVxfEoizCrcklNxUnUytyd10qPy08qIcMonf42ecdfCkCIC5vnCe5RoK9SlEcKmbElUdZ_yoh0t2-D_VMyXBn7Hhx' }}
+                            source={videoUrl}
                             useNativeControls={true}
                             resizeMode="contain"
                             isLooping={true}

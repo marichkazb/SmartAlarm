@@ -24,8 +24,7 @@ eas-build:
   tags:
     - docker
   script:
-    # Note: there is a limit of 30 EAS builds per month:
-    - echo "npx eas-cli build --platform all --profile preview --non-interactive"
+    - npx eas-cli build --platform all --profile preview --non-interactive
 
 web-build:
   stage: build
@@ -60,6 +59,6 @@ web-deploy:
   environment:
     name: production
     url: https://smartalarm.netlify.app/
-  needs: ["web-build"] # not necessary, since deploy stage happens only after build stage
+  needs: ["web-build"]
   script:
     - npx netlify-cli deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod --dir=web-build/
