@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, useColorScheme } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function Emergency() {
@@ -15,6 +15,81 @@ function Emergency() {
             }
         }
     ]);
+
+    const colorScheme = useColorScheme();
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: colorScheme === 'light' ? 'white' : 'black',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        contentContainer: {
+            paddingHorizontal: 20,
+            paddingTop: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        contactContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: 20,
+            backgroundColor: colorScheme === 'light' ? 'white' : 'black',
+            shadowRadius: 3,
+            shadowOpacity: 0.5,
+            shadowOffset: { width: 0, height: 4 },
+            shadowColor: '#8b0000',
+            elevation: 2,
+            borderRadius: 20,
+            padding: 20,
+            marginBottom: 20,
+        },
+        itemWrapper: {
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+        itemContainer: {
+            paddingTop: 20,
+            backgroundColor: colorScheme === 'light' ? 'white' : 'black',
+            shadowRadius: 3,
+            shadowOpacity: 0.5,
+            shadowOffset: { width: 0, height: 4 },
+            shadowColor: '#dc143c',
+            // borderWidth: 1,
+            // borderColor: '#dc143c', //colorScheme === 'light' ? '#dc143c' : '#ff6961',
+            elevation: 2,
+            borderRadius: 20,
+            padding: 20,
+            marginBottom: 20,
+            width: '100%',
+        },
+        titleStyle: {
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#dc143c',
+            marginVertical: 10,
+            textAlign: 'center',
+        },
+        titleContainer: {
+            padding: 10,
+            alignItems: 'center',
+        },
+        pageTitle: {
+            fontSize: 50,
+            fontWeight: '700',
+            color: colorScheme === 'light' ? 'black' : 'white',
+        },
+        textStyle: {
+            fontSize: 18,
+            color: colorScheme === 'light' ? '#333' : '#C0C0C0',
+            textAlign: 'center',
+        },
+        pageDesc: { color: colorScheme === 'light' ? '#797979' : '#C0C0C0',
+            fontSize: 25,
+            fontWeight: '300',
+        }
+    });
 
     return (
         <View style={styles.container}>
@@ -52,74 +127,3 @@ function Emergency() {
 }
 
 export default Emergency;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    contentContainer: {
-        paddingHorizontal: 20,
-        paddingTop: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    contactContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 20,
-        backgroundColor: '#ffffff',
-        shadowRadius: 3,
-        shadowOpacity: 0.5,
-        shadowOffset: { width: 0, height: 4 },
-        shadowColor: '#8b0000',
-        elevation: 2,
-        borderRadius: 20,
-        padding: 20,
-        marginBottom: 20,
-    },
-    itemWrapper: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    itemContainer: {
-        paddingTop: 20,
-        backgroundColor: '#ffffff',
-        shadowRadius: 3,
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 0, height: 4 },
-        shadowColor: '#dc143c',
-        elevation: 2,
-        borderRadius: 20,
-        padding: 20,
-        marginBottom: 20,
-        width: '100%',
-    },
-    titleStyle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#dc143c',
-        marginVertical: 10,
-        textAlign: 'center',
-    },
-    titleContainer: {
-        padding: 10,
-        alignItems: 'center',
-    },
-    pageTitle: {
-        fontSize: 50,
-        fontWeight: '700',
-    },
-    textStyle: {
-        fontSize: 18,
-        color: '#333',
-        textAlign: 'center',
-    },
-    pageDesc: { color: '#797979',
-        fontSize: 25,
-        fontWeight: '300',
-    }
-});
