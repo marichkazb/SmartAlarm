@@ -27,16 +27,6 @@ function Sensors() {
         if (message.destinationName === topic4) setMessage4(message.payloadString);
     }
 
-    // eslint-disable-next-line no-unused-vars
-    function publishTopic(topic, message) {
-        // Create a new MQTT message
-        const newMessage = new Paho.Message(message);
-        newMessage.destinationName = topic;
-
-        // Publish the new message
-        client.send(newMessage);
-    }
-
     useEffect(() => {
         client.connect({
             onSuccess: () => {
