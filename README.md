@@ -44,7 +44,8 @@ The system features a device which can be placed at a substantial spot in the ho
 </details>
 
 ## 🎬 Project demo
-* [Demo](https://www.youtube.com/watch?v=n2lq2O7l1xM)
+
+[<img src="assets/demo_video.png" width="90%">](https://www.youtube.com/watch?v=JawHDH_duKA&ab_channel=MariiaZabolotnia)
 
 ---
 ## 🔨 Pre-setup
