@@ -10,8 +10,6 @@
 #define PIR_MOTION_SENSOR D0
 #define RED_LED PIN_WIRE_SCL
 #define GREEN_LED D6
-//WIO_BUZZER (digital internal sensor)
-//ANGLE SENSOR (analog internal sensor)
 
 //Main library variables
 WiFiMulti wifiMulti;
@@ -31,7 +29,6 @@ long lastPeriodicMessageTime = 0;
 //Angle sensor
 long lastAngleTime = 0;
 float angles_sum = 0;
-float original_angle = 0;
 boolean angleActivated = false;
 long angleChangedTime = 0;
 
