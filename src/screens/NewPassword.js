@@ -57,7 +57,7 @@ function NewPassword({ navigation }) {
             color: colorScheme === 'dark' ? '#FFF' : '#2420FF',
         },
         btnText: {
-            fontWeight: 5000,
+            fontWeight: 500,
             fontSize: 20,
             paddingTop: 5,
             color: colorScheme === 'dark' ? '#FFF' : '#2420FF',
